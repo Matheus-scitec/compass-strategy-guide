@@ -200,8 +200,6 @@ export const COACHING_EXTRA = {
   },
 } satisfies Record<string, { texto: string; bom?: string; ruim?: string[] }>;
 
-Object.assign(COACHING, COACHING_EXTRA);
-
 /** Coaching contextual: 2 a 3 frases, um exemplo bom e um ruim. */
 export const COACHING: Record<string, { texto: string; bom?: string; ruim?: string[] }> = {
   objetivo_frase: {
