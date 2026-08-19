@@ -797,6 +797,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      criar_organizacao: { Args: { _nome: string }; Returns: string }
       e_membro: { Args: { _org: string }; Returns: boolean }
       org_da_iniciativa: { Args: { _ini: string }; Returns: string }
       org_da_reuniao: { Args: { _reuniao: string }; Returns: string }
