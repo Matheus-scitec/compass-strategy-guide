@@ -202,6 +202,7 @@ export const COACHING_EXTRA = {
 
 /** Coaching contextual: 2 a 3 frases, um exemplo bom e um ruim. */
 export const COACHING: Record<string, { texto: string; bom?: string; ruim?: string[] }> = {
+  ...COACHING_EXTRA,
   objetivo_frase: {
     texto:
       "Objetivo é frase de mudança com direção, não substantivo. Diga o que muda e por que isso deixa de ser um problema.",
