@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedCiclosRouteImport } from './routes/_authenticated/ciclos'
 import { Route as AuthenticatedCicloCicloIdIndexRouteImport } from './routes/_authenticated/ciclo.$cicloId.index'
 import { Route as AuthenticatedCicloCicloIdMapaRouteImport } from './routes/_authenticated/ciclo.$cicloId.mapa'
+import { Route as AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport } from './routes/_authenticated/ciclo.$cicloId.objetivo.$objetivoId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -47,6 +48,12 @@ const AuthenticatedCicloCicloIdMapaRoute =
     path: '/ciclo/$cicloId/mapa',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute =
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport.update({
+    id: '/ciclo/$cicloId/objetivo/$objetivoId',
+    path: '/ciclo/$cicloId/objetivo/$objetivoId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/ciclos': typeof AuthenticatedCiclosRoute
   '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,6 +69,7 @@ export interface FileRoutesByTo {
   '/ciclos': typeof AuthenticatedCiclosRoute
   '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/ciclo/$cicloId': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,13 +79,25 @@ export interface FileRoutesById {
   '/_authenticated/ciclos': typeof AuthenticatedCiclosRoute
   '/_authenticated/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/_authenticated/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/ciclos' | '/ciclo/$cicloId/mapa' | '/ciclo/$cicloId/'
+    | '/'
+    | '/auth'
+    | '/ciclos'
+    | '/ciclo/$cicloId/mapa'
+    | '/ciclo/$cicloId/'
+    | '/ciclo/$cicloId/objetivo/$objetivoId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/ciclos' | '/ciclo/$cicloId/mapa' | '/ciclo/$cicloId'
+  to:
+    | '/'
+    | '/auth'
+    | '/ciclos'
+    | '/ciclo/$cicloId/mapa'
+    | '/ciclo/$cicloId'
+    | '/ciclo/$cicloId/objetivo/$objetivoId'
   id:
     | '__root__'
     | '/'
@@ -85,6 +106,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ciclos'
     | '/_authenticated/ciclo/$cicloId/mapa'
     | '/_authenticated/ciclo/$cicloId/'
+    | '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -137,6 +159,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCicloCicloIdMapaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId': {
+      id: '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId'
+      path: '/ciclo/$cicloId/objetivo/$objetivoId'
+      fullPath: '/ciclo/$cicloId/objetivo/$objetivoId'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -144,12 +173,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCiclosRoute: typeof AuthenticatedCiclosRoute
   AuthenticatedCicloCicloIdMapaRoute: typeof AuthenticatedCicloCicloIdMapaRoute
   AuthenticatedCicloCicloIdIndexRoute: typeof AuthenticatedCicloCicloIdIndexRoute
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute: typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCiclosRoute: AuthenticatedCiclosRoute,
   AuthenticatedCicloCicloIdMapaRoute: AuthenticatedCicloCicloIdMapaRoute,
   AuthenticatedCicloCicloIdIndexRoute: AuthenticatedCicloCicloIdIndexRoute,
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute:
+    AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
