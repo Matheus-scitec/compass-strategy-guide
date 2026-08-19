@@ -1,0 +1,1 @@
+UPDATE public.indicador SET formula = '(clientes recorrentes ativos / total de clientes) * 100', fonte = 'CRM — relatório de retenção', frequencia = 'mensal', polaridade = 'maior', linha_base = 72.5, linha_base_data = '2026-01-31', publicado = true WHERE id = 'ff448544-7e32-4254-a066-970e0a4ba7d7' RETURNING id, nome, publicado, formula, fonte, linha_base, linha_base_data;
