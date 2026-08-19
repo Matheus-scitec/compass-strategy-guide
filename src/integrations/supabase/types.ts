@@ -53,6 +53,13 @@ export type Database = {
             referencedRelation: "iniciativa"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "acao_responsavel_id_perfil_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
         ]
       }
       apuracao: {
@@ -188,6 +195,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "comentario_autor_perfil_fkey"
+            columns: ["autor"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comentario_org_id_fkey"
             columns: ["org_id"]
             isOneToOne: false
@@ -239,6 +253,13 @@ export type Database = {
             columns: ["acao_id"]
             isOneToOne: false
             referencedRelation: "acao"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "decisao_responsavel_id_perfil_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "perfil"
             referencedColumns: ["id"]
           },
           {
@@ -433,6 +454,13 @@ export type Database = {
             referencedRelation: "objetivo"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "indicador_responsavel_apuracao_perfil_fkey"
+            columns: ["responsavel_apuracao"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
         ]
       }
       iniciativa: {
@@ -499,6 +527,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "iniciativa_lider_id_perfil_fkey"
+            columns: ["lider_id"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "iniciativa_objetivo_id_fkey"
             columns: ["objetivo_id"]
             isOneToOne: false
@@ -535,6 +570,13 @@ export type Database = {
             columns: ["org_id"]
             isOneToOne: false
             referencedRelation: "organizacao"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "membro_organizacao_user_id_perfil_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "perfil"
             referencedColumns: ["id"]
           },
         ]
@@ -623,6 +665,13 @@ export type Database = {
             columns: ["ciclo_id"]
             isOneToOne: false
             referencedRelation: "ciclo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "objetivo_dono_id_perfil_fkey"
+            columns: ["dono_id"]
+            isOneToOne: false
+            referencedRelation: "perfil"
             referencedColumns: ["id"]
           },
         ]
