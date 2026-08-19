@@ -10,33 +10,122 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedCiclosRouteImport } from './routes/_authenticated/ciclos'
+import { Route as AuthenticatedCicloCicloIdIndexRouteImport } from './routes/_authenticated/ciclo.$cicloId.index'
+import { Route as AuthenticatedCicloCicloIdMapaRouteImport } from './routes/_authenticated/ciclo.$cicloId.mapa'
+import { Route as AuthenticatedCicloCicloIdPainelRouteImport } from './routes/_authenticated/ciclo.$cicloId.painel'
+import { Route as AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport } from './routes/_authenticated/ciclo.$cicloId.objetivo.$objetivoId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCiclosRoute = AuthenticatedCiclosRouteImport.update({
+  id: '/ciclos',
+  path: '/ciclos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCicloCicloIdIndexRoute =
+  AuthenticatedCicloCicloIdIndexRouteImport.update({
+    id: '/ciclo/$cicloId/',
+    path: '/ciclo/$cicloId/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCicloCicloIdMapaRoute =
+  AuthenticatedCicloCicloIdMapaRouteImport.update({
+    id: '/ciclo/$cicloId/mapa',
+    path: '/ciclo/$cicloId/mapa',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCicloCicloIdPainelRoute =
+  AuthenticatedCicloCicloIdPainelRouteImport.update({
+    id: '/ciclo/$cicloId/painel',
+    path: '/ciclo/$cicloId/painel',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute =
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport.update({
+    id: '/ciclo/$cicloId/objetivo/$objetivoId',
+    path: '/ciclo/$cicloId/objetivo/$objetivoId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/ciclos': typeof AuthenticatedCiclosRoute
+  '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
+  '/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
+  '/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/ciclos': typeof AuthenticatedCiclosRoute
+  '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
+  '/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
+  '/ciclo/$cicloId': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/ciclos': typeof AuthenticatedCiclosRoute
+  '/_authenticated/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
+  '/_authenticated/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
+  '/_authenticated/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
+  '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId': typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/ciclos'
+    | '/ciclo/$cicloId/mapa'
+    | '/ciclo/$cicloId/painel'
+    | '/ciclo/$cicloId/'
+    | '/ciclo/$cicloId/objetivo/$objetivoId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/ciclos'
+    | '/ciclo/$cicloId/mapa'
+    | '/ciclo/$cicloId/painel'
+    | '/ciclo/$cicloId'
+    | '/ciclo/$cicloId/objetivo/$objetivoId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/ciclos'
+    | '/_authenticated/ciclo/$cicloId/mapa'
+    | '/_authenticated/ciclo/$cicloId/painel'
+    | '/_authenticated/ciclo/$cicloId/'
+    | '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +137,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ciclos': {
+      id: '/_authenticated/ciclos'
+      path: '/ciclos'
+      fullPath: '/ciclos'
+      preLoaderRoute: typeof AuthenticatedCiclosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ciclo/$cicloId/': {
+      id: '/_authenticated/ciclo/$cicloId/'
+      path: '/ciclo/$cicloId'
+      fullPath: '/ciclo/$cicloId/'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ciclo/$cicloId/mapa': {
+      id: '/_authenticated/ciclo/$cicloId/mapa'
+      path: '/ciclo/$cicloId/mapa'
+      fullPath: '/ciclo/$cicloId/mapa'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdMapaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ciclo/$cicloId/painel': {
+      id: '/_authenticated/ciclo/$cicloId/painel'
+      path: '/ciclo/$cicloId/painel'
+      fullPath: '/ciclo/$cicloId/painel'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId': {
+      id: '/_authenticated/ciclo/$cicloId/objetivo/$objetivoId'
+      path: '/ciclo/$cicloId/objetivo/$objetivoId'
+      fullPath: '/ciclo/$cicloId/objetivo/$objetivoId'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCiclosRoute: typeof AuthenticatedCiclosRoute
+  AuthenticatedCicloCicloIdMapaRoute: typeof AuthenticatedCicloCicloIdMapaRoute
+  AuthenticatedCicloCicloIdPainelRoute: typeof AuthenticatedCicloCicloIdPainelRoute
+  AuthenticatedCicloCicloIdIndexRoute: typeof AuthenticatedCicloCicloIdIndexRoute
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute: typeof AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCiclosRoute: AuthenticatedCiclosRoute,
+  AuthenticatedCicloCicloIdMapaRoute: AuthenticatedCicloCicloIdMapaRoute,
+  AuthenticatedCicloCicloIdPainelRoute: AuthenticatedCicloCicloIdPainelRoute,
+  AuthenticatedCicloCicloIdIndexRoute: AuthenticatedCicloCicloIdIndexRoute,
+  AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute:
+    AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
