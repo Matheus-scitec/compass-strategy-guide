@@ -113,7 +113,10 @@ function IniciativaDetalhe() {
     await qc.invalidateQueries({ queryKey: ["acoes", iniciativaId] });
   }
 
-  async function atualizarAcao(id: string, dados: Record<string, unknown>) {
+  async function atualizarAcao(
+    id: string,
+    dados: { titulo?: string; responsavel_id?: string | null; prazo?: string | null; status?: string },
+  ) {
     const { error } = await supabase.from("acao").update(dados).eq("id", id);
     if (error) {
       toast.error(error.message);
