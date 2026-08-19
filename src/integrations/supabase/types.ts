@@ -196,6 +196,60 @@ export type Database = {
           },
         ]
       }
+      decisao: {
+        Row: {
+          acao_id: string | null
+          autor: string
+          created_at: string
+          id: string
+          prazo: string | null
+          procedencia: Database["public"]["Enums"]["procedencia"]
+          responsavel_id: string | null
+          reuniao_id: string
+          status: string
+          texto: string
+        }
+        Insert: {
+          acao_id?: string | null
+          autor?: string
+          created_at?: string
+          id?: string
+          prazo?: string | null
+          procedencia?: Database["public"]["Enums"]["procedencia"]
+          responsavel_id?: string | null
+          reuniao_id: string
+          status?: string
+          texto: string
+        }
+        Update: {
+          acao_id?: string | null
+          autor?: string
+          created_at?: string
+          id?: string
+          prazo?: string | null
+          procedencia?: Database["public"]["Enums"]["procedencia"]
+          responsavel_id?: string | null
+          reuniao_id?: string
+          status?: string
+          texto?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decisao_acao_id_fkey"
+            columns: ["acao_id"]
+            isOneToOne: false
+            referencedRelation: "acao"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "decisao_reuniao_id_fkey"
+            columns: ["reuniao_id"]
+            isOneToOne: false
+            referencedRelation: "reuniao_revisao"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       diagnostico: {
         Row: {
           bloco: string
@@ -653,6 +707,50 @@ export type Database = {
           },
         ]
       }
+      reuniao_revisao: {
+        Row: {
+          ciclo_id: string
+          concluida_em: string | null
+          concluida_por: string | null
+          created_at: string
+          data: string
+          id: string
+          observacoes: string | null
+          periodo: string
+          status: string
+        }
+        Insert: {
+          ciclo_id: string
+          concluida_em?: string | null
+          concluida_por?: string | null
+          created_at?: string
+          data?: string
+          id?: string
+          observacoes?: string | null
+          periodo: string
+          status?: string
+        }
+        Update: {
+          ciclo_id?: string
+          concluida_em?: string | null
+          concluida_por?: string | null
+          created_at?: string
+          data?: string
+          id?: string
+          observacoes?: string | null
+          periodo?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reuniao_revisao_ciclo_id_fkey"
+            columns: ["ciclo_id"]
+            isOneToOne: false
+            referencedRelation: "ciclo"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       revisao_meta: {
         Row: {
           autor: string
@@ -701,6 +799,7 @@ export type Database = {
     Functions: {
       e_membro: { Args: { _org: string }; Returns: boolean }
       org_da_iniciativa: { Args: { _ini: string }; Returns: string }
+      org_da_reuniao: { Args: { _reuniao: string }; Returns: string }
       org_do_ciclo: { Args: { _ciclo: string }; Returns: string }
       org_do_indicador: { Args: { _ind: string }; Returns: string }
       org_do_objetivo: { Args: { _obj: string }; Returns: string }
