@@ -1,0 +1,1 @@
+UPDATE public.objetivo SET frase = 'Aumentar a retenção de clientes recorrentes acima de 90%' WHERE id = '4c1b9b8c-303f-4385-a23a-3b7bb7b66dd3' AND frase NOT ILIKE '%Aumentar a retenção%' RETURNING id, frase;
