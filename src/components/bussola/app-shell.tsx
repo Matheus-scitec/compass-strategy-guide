@@ -22,8 +22,13 @@ export function AppShell({
   const abas = cicloId
     ? [
         { to: "/ciclo/$cicloId", label: "Etapas" },
+        { to: "/ciclo/$cicloId/diagnostico", label: "Diagnóstico" },
+        { to: "/ciclo/$cicloId/escolhas", label: "Escolhas" },
         { to: "/ciclo/$cicloId/mapa", label: "Mapa estratégico" },
+        { to: "/ciclo/$cicloId/pessoas", label: "Por pessoa" },
         { to: "/ciclo/$cicloId/painel", label: "Painel de execução" },
+        { to: "/ciclo/$cicloId/revisao", label: "Revisão" },
+        { to: "/ciclo/$cicloId/conselho", label: "Conselho" },
       ]
     : [];
 

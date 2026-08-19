@@ -60,6 +60,148 @@ export const STATUS_INICIATIVA_LABEL: Record<string, string> = {
   T: "Travada",
 };
 
+export const STATUS_ACAO_LABEL: Record<string, string> = {
+  pendente: "Pendente",
+  em_andamento: "Em andamento",
+  concluida: "Concluída",
+  cancelada: "Cancelada",
+};
+
+/** Etapa 1 — retrato factual. Campo sem dado vira lacuna, nunca percepção. */
+export const BLOCOS_DIAGNOSTICO: { valor: string; nome: string; pergunta: string }[] = [
+  {
+    valor: "mercado_cliente",
+    nome: "Mercado e cliente",
+    pergunta:
+      "Que fatos existem sobre tamanho de mercado, segmentos, ganho/perda e o que o cliente reclama? Cite fonte e data.",
+  },
+  {
+    valor: "financeiro",
+    nome: "Situação financeira",
+    pergunta:
+      "Receita, margem por linha, capital de giro e endividamento nos últimos períodos — números fechados, não projeção.",
+  },
+  {
+    valor: "operacao",
+    nome: "Operação e processos",
+    pergunta:
+      "Capacidade instalada, gargalos medidos, prazo e retrabalho. Onde o processo já falha hoje, com número?",
+  },
+  {
+    valor: "pessoas",
+    nome: "Pessoas e cultura",
+    pergunta:
+      "Quadro, competências faltantes, rotatividade e concentração de conhecimento em poucas pessoas.",
+  },
+  {
+    valor: "tecnologia_dados",
+    nome: "Tecnologia e dados",
+    pergunta:
+      "Sistemas em uso, integrações que faltam e quais números hoje ninguém consegue extrair com confiança.",
+  },
+  {
+    valor: "concorrencia",
+    nome: "Concorrência",
+    pergunta:
+      "Quem ganha de vocês, em que exatamente, e como isso apareceu em negociação perdida.",
+  },
+  {
+    valor: "riscos",
+    nome: "Riscos e conformidade",
+    pergunta:
+      "Licenças, dependências de fornecedor ou cliente único, passivos e riscos com probabilidade e impacto.",
+  },
+  {
+    valor: "forcas_fraquezas",
+    nome: "Forças e fraquezas verificáveis",
+    pergunta:
+      "Só entra força que se prova com fato. Adjetivo sem evidência é opinião — registre como lacuna.",
+  },
+];
+
+export type TipoEscolha = Database["public"]["Enums"]["tipo_escolha"];
+
+export const TIPOS_ESCOLHA: {
+  valor: TipoEscolha;
+  nome: string;
+  explicacao: string;
+  exemplo: string;
+}[] = [
+  {
+    valor: "onde_jogar",
+    nome: "Onde jogar",
+    explicacao:
+      "Segmentos, geografias e ofertas onde a empresa vai disputar. Escolha é recorte: se cabe tudo, não houve escolha.",
+    exemplo: "Indústria alimentícia de médio porte no Sul, na linha de embalagem primária",
+  },
+  {
+    valor: "como_ganhar",
+    nome: "Como ganhar",
+    explicacao:
+      "A vantagem que faz o cliente escolher vocês naquele recorte, e que o concorrente não copia em um trimestre.",
+    exemplo: "Entrega em 7 dias com engenharia de aplicação dentro do cliente",
+  },
+  {
+    valor: "nao_faremos",
+    nome: "Não faremos",
+    explicacao:
+      "Renúncia explícita. Plano sem renúncia é lista de desejos: tudo continua concorrendo pela mesma capacidade.",
+    exemplo: "Não atenderemos licitação pública neste ciclo",
+  },
+];
+
+export const QUADRANTES_MATRIZ: { valor: string; nome: string; explicacao: string }[] = [
+  {
+    valor: "investir",
+    nome: "Atratividade alta · capacidade alta",
+    explicacao: "Onde jogar para ganhar. Recebe iniciativa e investimento.",
+  },
+  {
+    valor: "desenvolver",
+    nome: "Atratividade alta · capacidade baixa",
+    explicacao: "Precisa construir capacidade antes de prometer resultado.",
+  },
+  {
+    valor: "selecionar",
+    nome: "Atratividade baixa · capacidade alta",
+    explicacao: "Colher com esforço mínimo, sem consumir capacidade nova.",
+  },
+  {
+    valor: "sair",
+    nome: "Atratividade baixa · capacidade baixa",
+    explicacao: "Candidato natural à lista do que não faremos.",
+  },
+];
+
+export const COACHING_EXTRA = {
+  diagnostico_lacuna: {
+    texto:
+      "Lacuna é dado que não existe hoje. Registrar a lacuna é mais honesto que preencher o campo com percepção — e ela vira iniciativa de instrumentação, não achismo.",
+    bom: "Não temos margem por linha de produto: o ERP não separa custo indireto",
+    ruim: ["A margem deve estar por volta de 20%"],
+  },
+  escolha_nao_faremos: {
+    texto:
+      "Toda estratégia precisa de pelo menos uma renúncia explícita. Sem isso, nada é liberado de capacidade e todo objetivo disputa a mesma agenda.",
+    bom: "Não entraremos em varejo próprio neste ciclo",
+    ruim: ["Vamos priorizar tudo que der retorno"],
+  },
+  acao_entregavel: {
+    texto:
+      "Ação é o nível operacional da iniciativa: responsável pessoa, prazo e algo que alguém abre e confere. Se não dá para conferir, não dá para cobrar em reunião.",
+    bom: "Publicar o procedimento revisado no portal até 20/03",
+    ruim: ["Alinhar com o time"],
+  },
+  decisao_reuniao: {
+    texto:
+      "Reunião de revisão termina em decisão registrada com responsável e prazo. Decisão sem dono nomeado não sobrevive à semana seguinte.",
+    bom: "Antecipar a compra do molde — Marina Rocha — até 12/04",
+    ruim: ["Vamos estudar o assunto"],
+  },
+} satisfies Record<string, { texto: string; bom?: string; ruim?: string[] }>;
+
+Object.assign(COACHING, COACHING_EXTRA);
+
 /** Coaching contextual: 2 a 3 frases, um exemplo bom e um ruim. */
 export const COACHING: Record<string, { texto: string; bom?: string; ruim?: string[] }> = {
   objetivo_frase: {

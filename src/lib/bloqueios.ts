@@ -105,3 +105,81 @@ export function calculaSaude(
       .map(([lider, v]) => ({ lider, nome: v.nome, ativas: v.ativas })),
   };
 }
+
+export type DiagnosticoBloco = {
+  id: string;
+  bloco: string;
+  conteudo: string | null;
+  lacunas: string[];
+};
+
+export type EscolhaItem = {
+  id: string;
+  tipo: "onde_jogar" | "como_ganhar" | "nao_faremos";
+  texto: string;
+  quadrante_matriz: string | null;
+};
+
+export type AcaoItem = {
+  id: string;
+  titulo: string;
+  responsavel_id: string | null;
+  prazo: string | null;
+  status: string;
+  iniciativa_id: string;
+  perfil?: { id: string; nome: string } | null;
+};
+
+/** Etapa 1 fecha quando todo bloco tem conteúdo factual ou lacuna declarada. */
+export function bloqueiosDiagnostico(
+  blocos: { valor: string; nome: string }[],
+  registros: DiagnosticoBloco[],
+) {
+  const semRetrato = blocos.filter((b) => {
+    const r = registros.find((x) => x.bloco === b.valor);
+    return !r || (!r.conteudo?.trim() && !(r.lacunas ?? []).length);
+  });
+  return {
+    semRetrato,
+    totalLacunas: registros.reduce((n, r) => n + (r.lacunas ?? []).length, 0),
+    fechavel: semRetrato.length === 0,
+  };
+}
+
+/** Etapa 2 fecha com onde jogar, como ganhar e ao menos uma renúncia explícita. */
+export function bloqueiosEscolhas(escolhas: EscolhaItem[]) {
+  const de = (t: EscolhaItem["tipo"]) => escolhas.filter((e) => e.tipo === t);
+  const ondeJogar = de("onde_jogar");
+  const comoGanhar = de("como_ganhar");
+  const naoFaremos = de("nao_faremos");
+  return {
+    ondeJogar,
+    comoGanhar,
+    naoFaremos,
+    semOndeJogar: ondeJogar.length === 0,
+    semComoGanhar: comoGanhar.length === 0,
+    semRenuncia: naoFaremos.length === 0,
+    semQuadrante: ondeJogar.filter((e) => !e.quadrante_matriz),
+    fechavel: ondeJogar.length > 0 && comoGanhar.length > 0 && naoFaremos.length > 0,
+  };
+}
+
+/** Etapa 4 fecha quando toda iniciativa publicada tem ação com responsável e prazo. */
+export function bloqueiosPlanoOperacional(
+  iniciativas: IniciativaBloq[],
+  acoes: AcaoItem[],
+) {
+  const publicadas = iniciativas.filter((i) => i.publicado);
+  const semAcao = publicadas.filter((i) => !acoes.some((a) => a.iniciativa_id === i.id));
+  const acoesIncompletas = acoes.filter((a) => !a.responsavel_id || !a.prazo);
+  return {
+    semAcao,
+    acoesIncompletas,
+    fechavel: semAcao.length === 0 && acoesIncompletas.length === 0,
+  };
+}
+
+export function acaoAtrasada(a: AcaoItem): boolean {
+  if (!a.prazo || a.status === "concluida" || a.status === "cancelada") return false;
+  return a.prazo < new Date().toISOString().slice(0, 10);
+}
