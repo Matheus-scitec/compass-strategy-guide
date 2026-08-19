@@ -172,3 +172,135 @@ export function useMetasDoIndicador(indicadorId: string | undefined) {
       ),
   });
 }
+
+export function useDiagnostico(cicloId: string) {
+  return useQuery({
+    queryKey: ["diagnostico", cicloId],
+    queryFn: async () =>
+      precisa(supabase.from("diagnostico").select("*").eq("ciclo_id", cicloId)),
+  });
+}
+
+export function useEscolhas(cicloId: string) {
+  return useQuery({
+    queryKey: ["escolhas", cicloId],
+    queryFn: async () =>
+      precisa(
+        supabase.from("escolha").select("*").eq("ciclo_id", cicloId).order("created_at"),
+      ),
+  });
+}
+
+export function useIniciativa(iniciativaId: string) {
+  return useQuery({
+    queryKey: ["iniciativa", iniciativaId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("iniciativa")
+          .select("*, perfil:lider_id(id, nome), objetivo(id, codigo, frase, ciclo_id)")
+          .eq("id", iniciativaId)
+          .single(),
+      ),
+  });
+}
+
+export function useAcoesDaIniciativa(iniciativaId: string) {
+  return useQuery({
+    queryKey: ["acoes", iniciativaId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("acao")
+          .select("*, perfil:responsavel_id(id, nome)")
+          .eq("iniciativa_id", iniciativaId)
+          .order("prazo", { nullsFirst: false }),
+      ),
+  });
+}
+
+export function useAcoesDoCiclo(cicloId: string) {
+  return useQuery({
+    queryKey: ["acoes-ciclo", cicloId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("acao")
+          .select("*, perfil:responsavel_id(id, nome), iniciativa!inner(id, codigo, titulo, ciclo_id)")
+          .eq("iniciativa.ciclo_id", cicloId),
+      ),
+  });
+}
+
+export function useReunioes(cicloId: string) {
+  return useQuery({
+    queryKey: ["reunioes", cicloId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("reuniao_revisao")
+          .select("*")
+          .eq("ciclo_id", cicloId)
+          .order("data", { ascending: false }),
+      ),
+  });
+}
+
+export function useDecisoes(reuniaoId: string | undefined) {
+  return useQuery({
+    enabled: !!reuniaoId,
+    queryKey: ["decisoes", reuniaoId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("decisao")
+          .select("*, perfil:responsavel_id(id, nome)")
+          .eq("reuniao_id", reuniaoId!)
+          .order("created_at"),
+      ),
+  });
+}
+
+export function useComentarios(entidadeTipo: string, entidadeId: string | undefined) {
+  return useQuery({
+    enabled: !!entidadeId,
+    queryKey: ["comentarios", entidadeTipo, entidadeId],
+    queryFn: async () =>
+      precisa(
+        supabase
+          .from("comentario")
+          .select("*, perfil:autor(id, nome)")
+          .eq("entidade_tipo", entidadeTipo)
+          .eq("entidade_id", entidadeId!)
+          .order("created_at"),
+      ),
+  });
+}
+
+export function useReapresentacoes(cicloId: string) {
+  return useQuery({
+    queryKey: ["reapresentacoes", cicloId],
+    queryFn: async () => {
+      const indicadores = await precisa(
+        supabase
+          .from("indicador")
+          .select("id, objetivo!inner(ciclo_id)")
+          .eq("objetivo.ciclo_id", cicloId),
+      );
+      const ids = (indicadores as { id: string }[]).map((i) => i.id);
+      if (!ids.length) return [];
+      return precisa(
+        supabase
+          .from("reapresentacao")
+          .select("*, apuracao(indicador_id, periodo)")
+          .in("apuracao_id",
+            (
+              await precisa(
+                supabase.from("apuracao").select("id").in("indicador_id", ids),
+              )
+            ).map((a: { id: string }) => a.id),
+          ),
+      );
+    },
+  });
+}
