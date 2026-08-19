@@ -57,6 +57,7 @@ export function AppShell({
               </Link>
             ))}
           </nav>
+          {tela ? <ApresentacaoGuiada tela={tela} /> : null}
           <Button
             variant="ghost"
             size="sm"
@@ -95,15 +96,20 @@ export function Painel({
   acoes,
   children,
   className,
+  guia,
 }: {
   titulo?: string;
   descricao?: string;
   acoes?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  guia?: string;
 }) {
   return (
-    <section className={cn("rounded-md border border-border bg-card", className)}>
+    <section
+      className={cn("rounded-md border border-border bg-card", className)}
+      {...(guia ? { "data-guia": guia } : {})}
+    >
       {titulo ? (
         <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
           <div>
