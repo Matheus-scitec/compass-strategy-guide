@@ -154,24 +154,10 @@ function NovaOrganizacao() {
   const qc = useQueryClient();
 
   async function criar() {
-    const { data: user } = await supabase.auth.getUser();
-    if (!user.user) return;
-    const { data, error } = await supabase
-      .from("organizacao")
-      .insert({ nome, criado_por: user.user.id })
-      .select("id")
-      .single();
-    if (error || !data) {
-      toast.error(error?.message ?? "Não foi possível criar a organização.");
-      return;
-    }
-    const { error: erroMembro } = await supabase.from("membro_organizacao").insert({
-      org_id: data.id,
-      user_id: user.user.id,
-      papel: "facilitador",
-    });
-    if (erroMembro) {
-      toast.error(erroMembro.message);
+    if (!nome.trim()) return;
+    const { error } = await supabase.rpc("criar_organizacao", { _nome: nome.trim() });
+    if (error) {
+      toast.error(error.message ?? "Não foi possível criar a organização.");
       return;
     }
     await qc.invalidateQueries();
