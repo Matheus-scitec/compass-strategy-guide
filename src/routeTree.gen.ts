@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedCiclosRouteImport } from './routes/_authenticated/ciclos'
 import { Route as AuthenticatedCicloCicloIdIndexRouteImport } from './routes/_authenticated/ciclo.$cicloId.index'
+import { Route as AuthenticatedCicloCicloIdDiagnosticoRouteImport } from './routes/_authenticated/ciclo.$cicloId.diagnostico'
+import { Route as AuthenticatedCicloCicloIdEscolhasRouteImport } from './routes/_authenticated/ciclo.$cicloId.escolhas'
 import { Route as AuthenticatedCicloCicloIdMapaRouteImport } from './routes/_authenticated/ciclo.$cicloId.mapa'
 import { Route as AuthenticatedCicloCicloIdPainelRouteImport } from './routes/_authenticated/ciclo.$cicloId.painel'
 import { Route as AuthenticatedCicloCicloIdObjetivoObjetivoIdRouteImport } from './routes/_authenticated/ciclo.$cicloId.objetivo.$objetivoId'
@@ -43,6 +45,18 @@ const AuthenticatedCicloCicloIdIndexRoute =
     path: '/ciclo/$cicloId/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCicloCicloIdDiagnosticoRoute =
+  AuthenticatedCicloCicloIdDiagnosticoRouteImport.update({
+    id: '/ciclo/$cicloId/diagnostico',
+    path: '/ciclo/$cicloId/diagnostico',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCicloCicloIdEscolhasRoute =
+  AuthenticatedCicloCicloIdEscolhasRouteImport.update({
+    id: '/ciclo/$cicloId/escolhas',
+    path: '/ciclo/$cicloId/escolhas',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCicloCicloIdMapaRoute =
   AuthenticatedCicloCicloIdMapaRouteImport.update({
     id: '/ciclo/$cicloId/mapa',
@@ -66,6 +80,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ciclos': typeof AuthenticatedCiclosRoute
+  '/ciclo/$cicloId/diagnostico': typeof AuthenticatedCicloCicloIdDiagnosticoRoute
+  '/ciclo/$cicloId/escolhas': typeof AuthenticatedCicloCicloIdEscolhasRoute
   '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
   '/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
@@ -75,6 +91,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/ciclos': typeof AuthenticatedCiclosRoute
+  '/ciclo/$cicloId/diagnostico': typeof AuthenticatedCicloCicloIdDiagnosticoRoute
+  '/ciclo/$cicloId/escolhas': typeof AuthenticatedCicloCicloIdEscolhasRoute
   '/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
   '/ciclo/$cicloId': typeof AuthenticatedCicloCicloIdIndexRoute
@@ -86,6 +104,8 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/ciclos': typeof AuthenticatedCiclosRoute
+  '/_authenticated/ciclo/$cicloId/diagnostico': typeof AuthenticatedCicloCicloIdDiagnosticoRoute
+  '/_authenticated/ciclo/$cicloId/escolhas': typeof AuthenticatedCicloCicloIdEscolhasRoute
   '/_authenticated/ciclo/$cicloId/mapa': typeof AuthenticatedCicloCicloIdMapaRoute
   '/_authenticated/ciclo/$cicloId/painel': typeof AuthenticatedCicloCicloIdPainelRoute
   '/_authenticated/ciclo/$cicloId/': typeof AuthenticatedCicloCicloIdIndexRoute
@@ -97,6 +117,8 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ciclos'
+    | '/ciclo/$cicloId/diagnostico'
+    | '/ciclo/$cicloId/escolhas'
     | '/ciclo/$cicloId/mapa'
     | '/ciclo/$cicloId/painel'
     | '/ciclo/$cicloId/'
@@ -106,6 +128,8 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/ciclos'
+    | '/ciclo/$cicloId/diagnostico'
+    | '/ciclo/$cicloId/escolhas'
     | '/ciclo/$cicloId/mapa'
     | '/ciclo/$cicloId/painel'
     | '/ciclo/$cicloId'
@@ -116,6 +140,8 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/ciclos'
+    | '/_authenticated/ciclo/$cicloId/diagnostico'
+    | '/_authenticated/ciclo/$cicloId/escolhas'
     | '/_authenticated/ciclo/$cicloId/mapa'
     | '/_authenticated/ciclo/$cicloId/painel'
     | '/_authenticated/ciclo/$cicloId/'
@@ -165,6 +191,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCicloCicloIdIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/ciclo/$cicloId/diagnostico': {
+      id: '/_authenticated/ciclo/$cicloId/diagnostico'
+      path: '/ciclo/$cicloId/diagnostico'
+      fullPath: '/ciclo/$cicloId/diagnostico'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdDiagnosticoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ciclo/$cicloId/escolhas': {
+      id: '/_authenticated/ciclo/$cicloId/escolhas'
+      path: '/ciclo/$cicloId/escolhas'
+      fullPath: '/ciclo/$cicloId/escolhas'
+      preLoaderRoute: typeof AuthenticatedCicloCicloIdEscolhasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/ciclo/$cicloId/mapa': {
       id: '/_authenticated/ciclo/$cicloId/mapa'
       path: '/ciclo/$cicloId/mapa'
@@ -191,6 +231,8 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCiclosRoute: typeof AuthenticatedCiclosRoute
+  AuthenticatedCicloCicloIdDiagnosticoRoute: typeof AuthenticatedCicloCicloIdDiagnosticoRoute
+  AuthenticatedCicloCicloIdEscolhasRoute: typeof AuthenticatedCicloCicloIdEscolhasRoute
   AuthenticatedCicloCicloIdMapaRoute: typeof AuthenticatedCicloCicloIdMapaRoute
   AuthenticatedCicloCicloIdPainelRoute: typeof AuthenticatedCicloCicloIdPainelRoute
   AuthenticatedCicloCicloIdIndexRoute: typeof AuthenticatedCicloCicloIdIndexRoute
@@ -199,6 +241,10 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCiclosRoute: AuthenticatedCiclosRoute,
+  AuthenticatedCicloCicloIdDiagnosticoRoute:
+    AuthenticatedCicloCicloIdDiagnosticoRoute,
+  AuthenticatedCicloCicloIdEscolhasRoute:
+    AuthenticatedCicloCicloIdEscolhasRoute,
   AuthenticatedCicloCicloIdMapaRoute: AuthenticatedCicloCicloIdMapaRoute,
   AuthenticatedCicloCicloIdPainelRoute: AuthenticatedCicloCicloIdPainelRoute,
   AuthenticatedCicloCicloIdIndexRoute: AuthenticatedCicloCicloIdIndexRoute,
