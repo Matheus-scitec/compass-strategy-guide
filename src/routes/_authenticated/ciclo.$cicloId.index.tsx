@@ -258,6 +258,73 @@ function CicloHome() {
         </Painel>
 
         <div className="space-y-4">
+          <Painel titulo="Bloqueios das etapas 1, 2 e 4">
+            <div className="space-y-2">
+              {estadoDiagnostico.semRetrato.length ? (
+                <Bloqueio
+                  titulo={`Etapa 1: ${estadoDiagnostico.semRetrato.length} bloco(s) sem retrato`}
+                  porque="Bloco em branco no diagnóstico vira opinião na primeira discussão. Registre o fato ou declare a lacuna."
+                >
+                  <Link
+                    to="/ciclo/$cicloId/diagnostico"
+                    params={{ cicloId }}
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    Abrir diagnóstico
+                  </Link>
+                </Bloqueio>
+              ) : null}
+              {!estadoEscolhas.fechavel ? (
+                <Bloqueio
+                  titulo="Etapa 2: escolhas incompletas"
+                  porque={`Falta ${[
+                    estadoEscolhas.semOndeJogar ? "onde jogar" : null,
+                    estadoEscolhas.semComoGanhar ? "como ganhar" : null,
+                    estadoEscolhas.semRenuncia ? "renúncia explícita (não faremos)" : null,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}. Sem renúncia, nada sai da agenda e todo objetivo disputa a mesma capacidade.`}
+                >
+                  <Link
+                    to="/ciclo/$cicloId/escolhas"
+                    params={{ cicloId }}
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    Abrir escolhas
+                  </Link>
+                </Bloqueio>
+              ) : null}
+              {estadoPlano.semAcao.length ? (
+                <Bloqueio
+                  titulo={`Etapa 4: ${estadoPlano.semAcao.length} iniciativa(s) publicada(s) sem ações`}
+                  porque="Iniciativa sem ação é intenção: ninguém sabe o primeiro passo nem quem dá."
+                >
+                  {estadoPlano.semAcao.map((i) => (
+                    <Link
+                      key={i.id}
+                      to="/ciclo/$cicloId/iniciativa/$iniciativaId"
+                      params={{ cicloId, iniciativaId: i.id }}
+                      className="block text-primary underline-offset-4 hover:underline"
+                    >
+                      {i.codigo} · {i.titulo}
+                    </Link>
+                  ))}
+                </Bloqueio>
+              ) : null}
+              {estadoPlano.acoesIncompletas.length ? (
+                <Bloqueio
+                  titulo={`Etapa 4: ${estadoPlano.acoesIncompletas.length} ação(ões) sem responsável ou prazo`}
+                  porque="Ação sem pessoa nomeada e data não entra na carga de ninguém e não é cobrada em reunião."
+                />
+              ) : null}
+              {estadoDiagnostico.fechavel && estadoEscolhas.fechavel && estadoPlano.fechavel ? (
+                <p className="text-sm text-muted-foreground">
+                  Diagnóstico, escolhas e plano operacional sem bloqueio.
+                </p>
+              ) : null}
+            </div>
+          </Painel>
+
           <Painel titulo="Bloqueios para fechar o desdobramento">
             {saude.objetivosSemDono.length ? (
               <Bloqueio
