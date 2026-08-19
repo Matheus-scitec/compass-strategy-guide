@@ -108,7 +108,7 @@ function CicloHome() {
       subtitulo={
         c
           ? `${c.organizacao?.nome} · ciclo ${c.tipo === "tatico" ? "tático" : "estratégico"}`
-          : undefined
+          : ""
       }
       acoes={
         <Button asChild variant="outline">

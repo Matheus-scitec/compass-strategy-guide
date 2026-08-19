@@ -74,7 +74,7 @@ function MapaPage() {
     lider_id: string | null;
     entregavel_verificavel: string | null;
     publicado: boolean;
-    perfil: { nome: string } | null;
+    perfil: { id: string; nome: string } | null;
     objetivo: { codigo: string } | null;
   }[];
 
@@ -128,7 +128,7 @@ function MapaPage() {
                   <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide">
                     {p.nome}
                     {!p.sustentacao && indice < 3 ? (
-                      <ArrowUp className="h-3.5 w-3.5 text-muted-foreground" title="sustentada pela perspectiva abaixo" />
+                      <ArrowUp className="h-3.5 w-3.5 text-muted-foreground" />
                     ) : null}
                   </h2>
                   <p className="mt-0.5 max-w-2xl text-xs text-muted-foreground">{p.explicacao}</p>
