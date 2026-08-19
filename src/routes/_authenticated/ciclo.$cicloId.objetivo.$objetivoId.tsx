@@ -120,6 +120,7 @@ function FichaObjetivo() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="objetivo"
       titulo={o.frase}
       subtitulo={`${o.codigo} · ${PERSPECTIVAS.find((p) => p.valor === o.perspectiva)?.nome ?? ""} · ${c?.nome ?? ""}`}
       acoes={
@@ -135,7 +136,7 @@ function FichaObjetivo() {
     >
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">
-          <Painel titulo="Indicadores" descricao="Máximo de 3 por objetivo.">
+          <Painel guia="indicadores" titulo="Indicadores" descricao="Máximo de 3 por objetivo.">
             {indicadores.length > 3 ? (
               <div className="mb-3">
                 <Aviso
@@ -208,6 +209,7 @@ function FichaObjetivo() {
           </Painel>
 
           <Painel
+            guia="iniciativas"
             titulo="Iniciativas vinculadas"
             descricao="Como este objetivo vai acontecer."
             acoes={

@@ -150,6 +150,7 @@ function CicloHome() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="etapas"
       titulo={c?.nome ?? "Ciclo"}
       subtitulo={
         c
@@ -165,7 +166,7 @@ function CicloHome() {
       }
     >
       <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-        <Painel titulo="As cinco etapas" descricao="É possível voltar, mas fechar exige bloqueios resolvidos.">
+        <Painel guia="trilha" titulo="As cinco etapas" descricao="É possível voltar, mas fechar exige bloqueios resolvidos.">
           <ol className="space-y-2">
             {((etapas.data ?? []) as { id: string; numero: number; nome: string; status: string }[]).map(
               (etapa) => {
@@ -258,7 +259,7 @@ function CicloHome() {
         </Painel>
 
         <div className="space-y-4">
-          <Painel titulo="Bloqueios das etapas 1, 2 e 4">
+          <Painel guia="saude" titulo="Bloqueios das etapas 1, 2 e 4">
             <div className="space-y-2">
               {estadoDiagnostico.semRetrato.length ? (
                 <Bloqueio

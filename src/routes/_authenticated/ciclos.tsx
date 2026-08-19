@@ -76,6 +76,7 @@ function CiclosPage() {
 
   return (
     <AppShell
+      tela="ciclos"
       titulo="Ciclos de planejamento"
       subtitulo="Um ciclo por horizonte. O facilitador conduz as etapas; executivos preenchem; conselheiros leem."
       acoes={
@@ -95,7 +96,7 @@ function CiclosPage() {
       ) : null}
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_280px]">
-        <Painel titulo="Ciclos" descricao="Clique para abrir a trilha das cinco etapas.">
+        <Painel guia="ciclos" titulo="Ciclos" descricao="Clique para abrir a trilha das cinco etapas.">
           {ciclos.isLoading ? (
             <p className="text-sm text-muted-foreground">Carregando…</p>
           ) : listaCiclos.length ? (
@@ -129,7 +130,7 @@ function CiclosPage() {
           )}
         </Painel>
 
-        <Painel titulo="Organizações">
+        <Painel guia="organizacoes" titulo="Organizações">
           <ul className="space-y-2 text-sm">
             {listaOrgs.map((m) => (
               <li key={m.org_id} className="flex items-center justify-between gap-2">

@@ -237,6 +237,7 @@ function RevisaoPagina() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="revisao"
       titulo="Reunião de revisão"
       subtitulo="A pauta não é escolhida: ela é o desvio do período. Reunião termina em decisão com dono e prazo."
       acoes={
@@ -264,6 +265,7 @@ function RevisaoPagina() {
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
         <div className="space-y-4">
           <Painel
+            guia="pauta"
             titulo={reuniao ? `Pauta de ${fmtPeriodo(reuniao.periodo)}` : "Pauta"}
             descricao="Só entram objetivos e indicadores fora do plano no período."
           >
@@ -323,6 +325,7 @@ function RevisaoPagina() {
           </Painel>
 
           <Painel
+            guia="decisoes"
             titulo="Ata — decisões"
             descricao="Decisão sem responsável pessoa e prazo não encerra a ata."
             acoes={
@@ -436,7 +439,7 @@ function RevisaoPagina() {
             )}
           </Painel>
 
-          <Painel titulo="Bloqueios da ata">
+          <Painel guia="ata" titulo="Bloqueios da ata">
             <div className="space-y-2">
               {reuniao && !listaDecisoes.length ? (
                 <Bloqueio
