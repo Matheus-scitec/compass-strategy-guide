@@ -237,10 +237,11 @@ function PainelExecucao() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="painel"
       titulo="Painel de execução"
       subtitulo="Farol é consequência de meta e apuração, nunca opinião. Sem apuração, cinza — não verde."
       acoes={
-        <div className="w-48">
+        <div className="w-48" data-guia="periodo">
           <Select value={periodoAtivo} onValueChange={setPeriodo}>
             <SelectTrigger>
               <SelectValue placeholder="Período" />
@@ -265,7 +266,7 @@ function PainelExecucao() {
         ))}
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3" data-guia="apuracao">
         {lista.length ? (
           lista.map((o) => {
             const farol = farolObjetivo(o);

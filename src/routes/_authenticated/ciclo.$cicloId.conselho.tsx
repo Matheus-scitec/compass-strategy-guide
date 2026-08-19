@@ -191,6 +191,7 @@ function ConselhoPagina() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="conselho"
       titulo="Sala do conselho"
       subtitulo={`${c?.organizacao?.nome ?? ""} · ${c?.nome ?? ""} · leitura de ${fmtPeriodo(periodoAtivo || hoje)} — vista somente leitura`}
       acoes={
@@ -228,7 +229,7 @@ function ConselhoPagina() {
       ) : null}
 
       <div className="space-y-4">
-        <Painel titulo="Escolhas do ciclo" descricao="Onde jogar, como ganhar e o que ficou de fora.">
+        <Painel guia="resumo" titulo="Escolhas do ciclo" descricao="Onde jogar, como ganhar e o que ficou de fora.">
           <div className="grid gap-3 sm:grid-cols-3">
             {TIPOS_ESCOLHA.map((t) => (
               <div key={t.valor}>

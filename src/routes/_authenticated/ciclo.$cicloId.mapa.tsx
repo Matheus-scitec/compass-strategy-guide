@@ -98,6 +98,7 @@ function MapaPage() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="mapa"
       titulo="Mapa estratégico"
       subtitulo="Aprendizado & Crescimento sustenta Processos, que entregam Cliente & Mercado, que geram Financeiro."
       acoes={
@@ -111,7 +112,7 @@ function MapaPage() {
         </>
       }
     >
-      <div className="space-y-3">
+      <div className="space-y-3" data-guia="perspectivas">
         {PERSPECTIVAS.map((p, indice) => {
           const doGrupo = lista.filter((o) => o.perspectiva === p.valor);
           return (
@@ -204,6 +205,7 @@ function MapaPage() {
 
       <div className="mt-4">
         <Painel
+          guia="orfas"
           titulo="Iniciativas do ciclo"
           descricao="Iniciativa sem objetivo é órfã e bloqueia o fechamento do desdobramento."
         >

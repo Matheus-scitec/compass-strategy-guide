@@ -80,11 +80,12 @@ function DiagnosticoPagina() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="diagnostico"
       titulo="Diagnóstico"
       subtitulo="Etapa 1: retrato factual antes de opinião. O que não existe como dado entra como lacuna."
     >
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className="space-y-3">
+        <div className="space-y-3" data-guia="blocos">
           {BLOCOS_DIAGNOSTICO.map((b) => {
             const r = registroDe(b.valor);
             const vazio = !r?.conteudo?.trim() && !(r?.lacunas ?? []).length;

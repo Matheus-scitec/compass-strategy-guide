@@ -91,6 +91,7 @@ function PessoasPagina() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="pessoas"
       titulo="Carga por pessoa"
       subtitulo="Capacidade é finita: o plano só é executável se couber na agenda de quem vai executar."
       acoes={
@@ -108,7 +109,7 @@ function PessoasPagina() {
         </div>
       ) : null}
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2" data-guia="carga">
         {carga.map((p) => (
           <Painel
             key={p.userId}

@@ -92,11 +92,12 @@ function EscolhasPagina() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="escolhas"
       titulo="Escolhas estratégicas"
       subtitulo="Etapa 2: onde jogar, como ganhar e — obrigatório — o que não faremos neste ciclo."
     >
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
-        <div className="space-y-3">
+        <div className="space-y-3" data-guia="escolhas">
           {TIPOS_ESCOLHA.map((t) => {
             const itens = lista.filter((e) => e.tipo === t.valor);
             return (
@@ -198,7 +199,7 @@ function EscolhasPagina() {
             </div>
           </Painel>
 
-          <Painel titulo="Matriz de atratividade e capacidade">
+          <Painel guia="matriz" titulo="Matriz de atratividade e capacidade">
             <div className="grid grid-cols-2 gap-2">
               {QUADRANTES_MATRIZ.map((q) => {
                 const itens = estado.ondeJogar.filter((e) => e.quadrante_matriz === q.valor);

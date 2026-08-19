@@ -140,6 +140,7 @@ function IniciativaDetalhe() {
   return (
     <AppShell
       cicloId={cicloId}
+      tela="iniciativa"
       titulo={i ? `${i.codigo} · ${i.titulo}` : "Iniciativa"}
       subtitulo={
         i
@@ -157,6 +158,7 @@ function IniciativaDetalhe() {
       <div className="grid gap-4 lg:grid-cols-[1fr_340px]">
         <div className="space-y-4">
           <Painel
+            guia="acoes"
             titulo="Ações (nível operacional)"
             descricao="Cada ação tem responsável pessoa, prazo e entregável que alguém confere."
           >

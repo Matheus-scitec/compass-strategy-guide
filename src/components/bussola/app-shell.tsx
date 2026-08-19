@@ -3,6 +3,8 @@ import { Compass, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ApresentacaoGuiada } from "@/components/bussola/apresentacao";
+import type { TelaGuia } from "@/lib/apresentacao";
 
 export function AppShell({
   children,
@@ -10,12 +12,14 @@ export function AppShell({
   titulo,
   subtitulo,
   acoes,
+  tela,
 }: {
   children: React.ReactNode;
   cicloId?: string;
   titulo?: string;
   subtitulo?: string;
   acoes?: React.ReactNode;
+  tela?: TelaGuia;
 }) {
   const navigate = useNavigate();
 
@@ -40,7 +44,7 @@ export function AppShell({
             <Compass className="h-4 w-4 text-primary" />
             Bússola
           </Link>
-          <nav className="flex flex-1 items-center gap-1 overflow-x-auto">
+          <nav className="flex flex-1 items-center gap-1 overflow-x-auto" data-guia="abas">
             {abas.map((aba) => (
               <Link
                 key={aba.to}
@@ -53,6 +57,7 @@ export function AppShell({
               </Link>
             ))}
           </nav>
+          {tela ? <ApresentacaoGuiada tela={tela} /> : null}
           <Button
             variant="ghost"
             size="sm"
@@ -91,15 +96,20 @@ export function Painel({
   acoes,
   children,
   className,
+  guia,
 }: {
   titulo?: string;
   descricao?: string;
   acoes?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  guia?: string;
 }) {
   return (
-    <section className={cn("rounded-md border border-border bg-card", className)}>
+    <section
+      className={cn("rounded-md border border-border bg-card", className)}
+      {...(guia ? { "data-guia": guia } : {})}
+    >
       {titulo ? (
         <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
           <div>
