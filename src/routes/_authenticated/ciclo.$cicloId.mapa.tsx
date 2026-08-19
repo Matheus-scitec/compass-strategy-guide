@@ -214,7 +214,13 @@ function MapaPage() {
                 return (
                   <li key={i.id} className="flex flex-wrap items-center gap-2 py-2">
                     <span className="num text-xs text-muted-foreground">{i.codigo}</span>
-                    <span className="flex-1 min-w-[180px]">{i.titulo}</span>
+                    <Link
+                      to="/ciclo/$cicloId/iniciativa/$iniciativaId"
+                      params={{ cicloId, iniciativaId: i.id }}
+                      className="min-w-[180px] flex-1 underline-offset-4 hover:underline"
+                    >
+                      {i.titulo}
+                    </Link>
                     <span className="text-xs text-muted-foreground">
                       {i.perfil?.nome ?? "sem líder"} · prazo {fmtData(i.fim)}
                     </span>
