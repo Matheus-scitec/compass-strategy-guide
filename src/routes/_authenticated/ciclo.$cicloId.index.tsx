@@ -8,14 +8,29 @@ import { AppShell, Painel } from "@/components/bussola/app-shell";
 import { Aviso, Bloqueio } from "@/components/bussola/selos";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useCiclo, useEtapas, useIniciativas, useObjetivos } from "@/lib/queries";
 import {
+  useAcoesDoCiclo,
+  useCiclo,
+  useDiagnostico,
+  useEscolhas,
+  useEtapas,
+  useIniciativas,
+  useObjetivos,
+} from "@/lib/queries";
+import {
+  bloqueiosDiagnostico,
+  bloqueiosEscolhas,
+  bloqueiosPlanoOperacional,
   calculaSaude,
   faltasDaIniciativa,
   faltasDoIndicador,
+  type AcaoItem,
+  type DiagnosticoBloco,
+  type EscolhaItem,
   type IniciativaBloq,
   type ObjetivoBloq,
 } from "@/lib/bloqueios";
+import { BLOCOS_DIAGNOSTICO } from "@/lib/bussola";
 import { fmtNumero, fmtPercentual } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/ciclo/$cicloId/")({
@@ -51,6 +66,9 @@ function CicloHome() {
   const etapas = useEtapas(cicloId);
   const objetivos = useObjetivos(cicloId);
   const iniciativas = useIniciativas(cicloId);
+  const diagnostico = useDiagnostico(cicloId);
+  const escolhas = useEscolhas(cicloId);
+  const acoes = useAcoesDoCiclo(cicloId);
   const qc = useQueryClient();
   const [justificativa, setJustificativa] = useState("");
 
@@ -59,6 +77,16 @@ function CicloHome() {
   const saude = useMemo(
     () => calculaSaude(listaObjetivos, listaIniciativas),
     [listaObjetivos, listaIniciativas],
+  );
+
+  const estadoDiagnostico = bloqueiosDiagnostico(
+    BLOCOS_DIAGNOSTICO,
+    (diagnostico.data ?? []) as unknown as DiagnosticoBloco[],
+  );
+  const estadoEscolhas = bloqueiosEscolhas((escolhas.data ?? []) as unknown as EscolhaItem[]);
+  const estadoPlano = bloqueiosPlanoOperacional(
+    listaIniciativas,
+    (acoes.data ?? []) as unknown as AcaoItem[],
   );
 
   const c = ciclo.data as
@@ -71,6 +99,24 @@ function CicloHome() {
   ].some(Boolean);
 
   async function fecharEtapa(numero: number, status: string) {
+    if (status !== "fechada") {
+      if (numero === 1 && !estadoDiagnostico.fechavel) {
+        toast.error("Todo bloco do diagnóstico precisa de fato registrado ou lacuna declarada.");
+        return;
+      }
+      if (numero === 2 && !estadoEscolhas.fechavel) {
+        toast.error(
+          "Escolhas exigem onde jogar, como ganhar e ao menos uma renúncia explícita.",
+        );
+        return;
+      }
+      if (numero === 4 && !estadoPlano.fechavel) {
+        toast.error(
+          "Toda iniciativa publicada precisa de ações com responsável pessoa e prazo.",
+        );
+        return;
+      }
+    }
     if (numero === 3 && bloqueiosDesdobramento) {
       toast.error("Resolva os bloqueios do desdobramento antes de fechar a etapa.");
       return;
@@ -123,7 +169,12 @@ function CicloHome() {
           <ol className="space-y-2">
             {((etapas.data ?? []) as { id: string; numero: number; nome: string; status: string }[]).map(
               (etapa) => {
-                const travada = etapa.numero === 3 && bloqueiosDesdobramento;
+                const travada =
+                  etapa.status !== "fechada" &&
+                  ((etapa.numero === 1 && !estadoDiagnostico.fechavel) ||
+                    (etapa.numero === 2 && !estadoEscolhas.fechavel) ||
+                    (etapa.numero === 3 && bloqueiosDesdobramento) ||
+                    (etapa.numero === 4 && !estadoPlano.fechavel));
                 return (
                   <li
                     key={etapa.id}
@@ -145,6 +196,33 @@ function CicloHome() {
                       <p className="mt-0.5 text-xs text-muted-foreground">
                         {ETAPAS_DESCRICAO[etapa.numero]}
                       </p>
+                      {etapa.numero === 1 ? (
+                        <Link
+                          to="/ciclo/$cicloId/diagnostico"
+                          params={{ cicloId }}
+                          className="mt-1 inline-block text-xs text-primary underline-offset-4 hover:underline"
+                        >
+                          Trabalhar no diagnóstico
+                        </Link>
+                      ) : null}
+                      {etapa.numero === 2 ? (
+                        <Link
+                          to="/ciclo/$cicloId/escolhas"
+                          params={{ cicloId }}
+                          className="mt-1 inline-block text-xs text-primary underline-offset-4 hover:underline"
+                        >
+                          Registrar as escolhas
+                        </Link>
+                      ) : null}
+                      {etapa.numero === 4 ? (
+                        <Link
+                          to="/ciclo/$cicloId/pessoas"
+                          params={{ cicloId }}
+                          className="mt-1 inline-block text-xs text-primary underline-offset-4 hover:underline"
+                        >
+                          Ver carga por pessoa
+                        </Link>
+                      ) : null}
                       {etapa.numero === 3 ? (
                         <Link
                           to="/ciclo/$cicloId/mapa"
