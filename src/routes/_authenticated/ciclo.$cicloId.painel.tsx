@@ -76,6 +76,8 @@ type ObjetivoLinha = {
   indicador: Indicador[];
 };
 
+type Classificacao = "dado_medido" | "estimativa" | "premissa_da_diretoria";
+
 type Meta = { indicador_id: string; periodo: string; valor: number | null };
 type Apuracao = {
   id: string;
@@ -85,7 +87,7 @@ type Apuracao = {
   fechado: boolean;
   observacao: string | null;
   reapresentado: boolean;
-  classificacao_numero: "dado_medido" | "estimativa" | "premissa" | "cenario";
+  classificacao_numero: Classificacao;
 };
 
 function PainelExecucao() {
@@ -151,15 +153,29 @@ function PainelExecucao() {
     await qc.invalidateQueries({ queryKey: ["apuracoes", cicloId] });
   }
 
-  async function salvarCampo(
-    indicadorId: string,
-    campo: "observacao" | "classificacao_numero",
-    valor: string,
-  ) {
+  async function salvarObservacao(indicadorId: string, observacao: string) {
     const { error } = await supabase
       .from("apuracao")
       .upsert(
-        { indicador_id: indicadorId, periodo: periodoAtivo, [campo]: valor },
+        { indicador_id: indicadorId, periodo: periodoAtivo, observacao },
+        { onConflict: "indicador_id,periodo" },
+      );
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await qc.invalidateQueries({ queryKey: ["apuracoes", cicloId] });
+  }
+
+  async function salvarClassificacao(indicadorId: string, classificacao: Classificacao) {
+    const { error } = await supabase
+      .from("apuracao")
+      .upsert(
+        {
+          indicador_id: indicadorId,
+          periodo: periodoAtivo,
+          classificacao_numero: classificacao,
+        },
         { onConflict: "indicador_id,periodo" },
       );
     if (error) {
@@ -186,7 +202,7 @@ function PainelExecucao() {
     if (!reapresentando || !motivo.trim()) return;
     const { error } = await supabase.rpc("reapresentar_apuracao", {
       _apuracao: reapresentando.apuracao.id,
-      _valor_novo: reapresentando.novo === "" ? null : Number(reapresentando.novo),
+      _valor_novo: reapresentando.novo === "" ? 0 : Number(reapresentando.novo),
       _motivo: motivo,
     });
     if (error) {
@@ -346,7 +362,7 @@ function PainelExecucao() {
                                 <Select
                                   value={ap?.classificacao_numero ?? "dado_medido"}
                                   onValueChange={(v) =>
-                                    salvarCampo(i.id, "classificacao_numero", v)
+                                    salvarClassificacao(i.id, v as Classificacao)
                                   }
                                 >
                                   <SelectTrigger className="h-8 w-36 text-xs">
@@ -355,8 +371,9 @@ function PainelExecucao() {
                                   <SelectContent>
                                     <SelectItem value="dado_medido">dado medido</SelectItem>
                                     <SelectItem value="estimativa">estimativa</SelectItem>
-                                    <SelectItem value="premissa">premissa</SelectItem>
-                                    <SelectItem value="cenario">cenário</SelectItem>
+                                    <SelectItem value="premissa_da_diretoria">
+                                      premissa da diretoria
+                                    </SelectItem>
                                   </SelectContent>
                                 </Select>
                                 <div className="mt-1">
@@ -372,7 +389,7 @@ function PainelExecucao() {
                                   placeholder="o que explica o número"
                                   onBlur={(e) =>
                                     e.target.value !== (ap?.observacao ?? "") &&
-                                    salvarCampo(i.id, "observacao", e.target.value)
+                                    salvarObservacao(i.id, e.target.value)
                                   }
                                   className="h-8 w-48"
                                 />
