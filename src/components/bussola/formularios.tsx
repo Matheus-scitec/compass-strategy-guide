@@ -428,6 +428,25 @@ export function DialogIndicador({
               onChange={(e) => setForm({ ...form, formula: e.target.value })}
               placeholder="(entregas no prazo ÷ entregas do mês) × 100"
             />
+            {form.formula?.trim() ? (
+              analise.ok ? (
+                <p className="mt-1 text-xs text-farol-verde">
+                  Fórmula válida
+                  {analise.variaveis.length
+                    ? ` · variáveis: ${analise.variaveis.join(", ")}`
+                    : " · constante (sem variáveis)."}
+                </p>
+              ) : (
+                <p className="mt-1 text-xs text-farol-vermelho">
+                  {analise.erro}
+                </p>
+              )
+            ) : null}
+            <p className="mt-1 text-xs text-muted-foreground">
+              Use × e ÷ para multiplicar e dividir, parênteses para agrupar e nomes para variáveis
+              (ex.: <span className="num">entregas_prazo</span>). Fórmula válida permite calcular o
+              apurado no painel.
+            </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
