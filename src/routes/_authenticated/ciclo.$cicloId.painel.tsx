@@ -36,6 +36,8 @@ import {
 } from "@/lib/bussola";
 import { fmtNumero, fmtPercentual, fmtPeriodo } from "@/lib/format";
 import { useApuracoes, useCiclo, useMetas, useObjetivos } from "@/lib/queries";
+import { Sparkline } from "@/components/bussola/sparkline";
+import { CalculadoraFormula } from "@/components/bussola/calculadora-formula";
 
 export const Route = createFileRoute("/_authenticated/ciclo/$cicloId/painel")({
   head: () => ({
