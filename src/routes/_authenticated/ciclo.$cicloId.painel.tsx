@@ -361,13 +361,19 @@ function PainelExecucao() {
                                 )}
                               </td>
                               <td className="py-2 pr-3">
-                                <Input
-                                  key={`${i.id}-${periodoAtivo}-${ap?.valor ?? ""}`}
-                                  defaultValue={ap?.valor ?? ""}
-                                  inputMode="decimal"
-                                  onBlur={(e) => salvarValor(i, e.target.value)}
-                                  className="num h-8 w-28"
-                                />
+                                <div className="flex items-center gap-1">
+                                  <Input
+                                    key={`${i.id}-${periodoAtivo}-${ap?.valor ?? ""}`}
+                                    defaultValue={ap?.valor ?? ""}
+                                    inputMode="decimal"
+                                    onBlur={(e) => salvarValor(i, e.target.value)}
+                                    className="num h-8 w-24"
+                                  />
+                                  <CalculadoraFormula
+                                    formula={i.formula}
+                                    onAplicar={(valor) => salvarValor(i, String(valor))}
+                                  />
+                                </div>
                               </td>
                               <td className="num py-2 pr-3">{fmtPercentual(atingimento)}</td>
                               <td className="py-2 pr-3">
@@ -376,6 +382,14 @@ function PainelExecucao() {
                                 >
                                   {FAROL_LABEL[f]}
                                 </span>
+                                {(i.limite_verde !== null || i.limite_atencao !== null) ? (
+                                  <p className="num mt-0.5 text-[10px] text-muted-foreground">
+                                    v{i.limite_verde ?? 100}/a{i.limite_atencao ?? 90}
+                                  </p>
+                                ) : null}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <Sparkline pontos={serie} polaridade={i.polaridade ?? "maior"} />
                               </td>
                               <td className="py-2 pr-3">
                                 <Select
