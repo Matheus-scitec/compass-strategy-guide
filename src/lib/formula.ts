@@ -98,7 +98,9 @@ class Parser {
   }
 
   private consumir(): Token {
-    return this.tokens[this.pos++];
+    const t = this.tokens[this.pos++];
+    if (!t) throw new Error("Fórmula incompleta.");
+    return t;
   }
 
   private esperaParen(valor: "(" | ")") {
