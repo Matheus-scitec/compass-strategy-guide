@@ -36,6 +36,8 @@ import {
 } from "@/lib/bussola";
 import { fmtNumero, fmtPercentual, fmtPeriodo } from "@/lib/format";
 import { useApuracoes, useCiclo, useMetas, useObjetivos } from "@/lib/queries";
+import { Sparkline } from "@/components/bussola/sparkline";
+import { CalculadoraFormula } from "@/components/bussola/calculadora-formula";
 
 export const Route = createFileRoute("/_authenticated/ciclo/$cicloId/painel")({
   head: () => ({
@@ -65,6 +67,9 @@ type Indicador = {
   polaridade: "maior" | "menor" | null;
   unidade: string | null;
   tipo_indicador: string;
+  formula: string | null;
+  limite_verde: number | null;
+  limite_atencao: number | null;
 };
 
 type ObjetivoLinha = {
@@ -218,7 +223,11 @@ function PainelExecucao() {
   function farolObjetivo(o: ObjetivoLinha): Farol {
     const publicados = (o.indicador ?? []).filter((i) => i.publicado);
     const faroisDe = publicados.map((i) =>
-      farolDe(calculaAtingimento(apuracaoDe(i.id)?.valor, metaDe(i.id), i.polaridade)),
+      farolDe(
+        calculaAtingimento(apuracaoDe(i.id)?.valor, metaDe(i.id), i.polaridade),
+        i.limite_verde,
+        i.limite_atencao,
+      ),
     );
     if (!faroisDe.length || faroisDe.every((f) => f === "sem_apuracao")) return "sem_apuracao";
     if (faroisDe.includes("critico")) return "critico";
@@ -306,6 +315,7 @@ function PainelExecucao() {
                           <th className="py-1.5 font-medium">Apurado</th>
                           <th className="py-1.5 font-medium">Atingimento</th>
                           <th className="py-1.5 font-medium">Farol</th>
+                          <th className="py-1.5 font-medium">Tendência</th>
                           <th className="py-1.5 font-medium">Natureza</th>
                           <th className="py-1.5 font-medium">Observação</th>
                           <th className="py-1.5 font-medium">Período</th>
@@ -316,7 +326,15 @@ function PainelExecucao() {
                           const meta = metaDe(i.id);
                           const ap = apuracaoDe(i.id);
                           const atingimento = calculaAtingimento(ap?.valor, meta, i.polaridade);
-                          const f = farolDe(atingimento);
+                          const f = farolDe(atingimento, i.limite_verde, i.limite_atencao);
+                          const serie = periodos.map((p) => ({
+                            periodo: p,
+                            valor:
+                              listaApuracoes.find((a) => a.indicador_id === i.id && a.periodo === p)
+                                ?.valor ?? null,
+                            meta: listaMetas.find((m) => m.indicador_id === i.id && m.periodo === p)
+                              ?.valor ?? null,
+                          }));
                           return (
                             <tr key={i.id} className="border-b border-border/60 align-top">
                               <td className="py-2 pr-3">
@@ -343,13 +361,19 @@ function PainelExecucao() {
                                 )}
                               </td>
                               <td className="py-2 pr-3">
-                                <Input
-                                  key={`${i.id}-${periodoAtivo}-${ap?.valor ?? ""}`}
-                                  defaultValue={ap?.valor ?? ""}
-                                  inputMode="decimal"
-                                  onBlur={(e) => salvarValor(i, e.target.value)}
-                                  className="num h-8 w-28"
-                                />
+                                <div className="flex items-center gap-1">
+                                  <Input
+                                    key={`${i.id}-${periodoAtivo}-${ap?.valor ?? ""}`}
+                                    defaultValue={ap?.valor ?? ""}
+                                    inputMode="decimal"
+                                    onBlur={(e) => salvarValor(i, e.target.value)}
+                                    className="num h-8 w-24"
+                                  />
+                                  <CalculadoraFormula
+                                    formula={i.formula}
+                                    onAplicar={(valor) => salvarValor(i, String(valor))}
+                                  />
+                                </div>
                               </td>
                               <td className="num py-2 pr-3">{fmtPercentual(atingimento)}</td>
                               <td className="py-2 pr-3">
@@ -358,6 +382,14 @@ function PainelExecucao() {
                                 >
                                   {FAROL_LABEL[f]}
                                 </span>
+                                {(i.limite_verde !== null || i.limite_atencao !== null) ? (
+                                  <p className="num mt-0.5 text-[10px] text-muted-foreground">
+                                    v{i.limite_verde ?? 100}/a{i.limite_atencao ?? 90}
+                                  </p>
+                                ) : null}
+                              </td>
+                              <td className="py-2 pr-3">
+                                <Sparkline pontos={serie} polaridade={i.polaridade ?? "maior"} />
                               </td>
                               <td className="py-2 pr-3">
                                 <Select

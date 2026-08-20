@@ -31,6 +31,7 @@ import {
   type Procedencia,
 } from "@/lib/bussola";
 import { faltasDaIniciativa, faltasDoIndicador } from "@/lib/bloqueios";
+import { analisarFormula } from "@/lib/formula";
 
 type Membro = { user_id: string; perfil: { id: string; nome: string } | null };
 
@@ -277,6 +278,8 @@ export type IndicadorForm = {
   responsavel_apuracao: string | null;
   tipo_indicador: string;
   publicado: boolean;
+  limite_verde: string;
+  limite_atencao: string;
   procedencia: Procedencia;
 };
 
@@ -303,21 +306,31 @@ export function DialogIndicador({
 }) {
   const qc = useQueryClient();
   const [form, setForm] = useState<IndicadorForm>(
-    inicial ?? {
-      nome: "",
-      formula: "",
-      fonte: "",
-      frequencia: "mensal",
-      polaridade: "maior",
-      unidade: "",
-      linha_base: "",
-      linha_base_data: null,
-      responsavel_apuracao: null,
-      tipo_indicador: "resultado",
-      publicado: false,
-      procedencia: "decidido_pelo_time",
-    },
+    inicial
+      ? {
+          ...inicial,
+          limite_verde: inicial.limite_verde ?? "",
+          limite_atencao: inicial.limite_atencao ?? "",
+        }
+      : {
+          nome: "",
+          formula: "",
+          fonte: "",
+          frequencia: "mensal",
+          polaridade: "maior",
+          unidade: "",
+          linha_base: "",
+          linha_base_data: null,
+          responsavel_apuracao: null,
+          tipo_indicador: "resultado",
+          publicado: false,
+          limite_verde: "",
+          limite_atencao: "",
+          procedencia: "decidido_pelo_time",
+        },
   );
+
+  const analise = analisarFormula(form.formula);
 
   const normaliza = (t: string) => t.trim().toLowerCase();
   const duplicado = nomesExistentes.find(
@@ -340,6 +353,8 @@ export function DialogIndicador({
     polaridade: form.polaridade,
     linha_base: form.linha_base === "" ? null : Number(form.linha_base),
     linha_base_data: form.linha_base_data,
+    limite_verde: null,
+    limite_atencao: null,
     objetivo_id: objetivoId,
   });
 
@@ -357,6 +372,8 @@ export function DialogIndicador({
       responsavel_apuracao: form.responsavel_apuracao,
       tipo_indicador: form.tipo_indicador,
       publicado: form.publicado && faltas.length === 0,
+      limite_verde: form.limite_verde === "" ? null : Number(form.limite_verde),
+      limite_atencao: form.limite_atencao === "" ? null : Number(form.limite_atencao),
       procedencia: form.procedencia,
     };
     const resposta = inicial?.id
@@ -411,6 +428,25 @@ export function DialogIndicador({
               onChange={(e) => setForm({ ...form, formula: e.target.value })}
               placeholder="(entregas no prazo ÷ entregas do mês) × 100"
             />
+            {form.formula?.trim() ? (
+              analise.ok ? (
+                <p className="mt-1 text-xs text-farol-verde">
+                  Fórmula válida
+                  {analise.variaveis.length
+                    ? ` · variáveis: ${analise.variaveis.join(", ")}`
+                    : " · constante (sem variáveis)."}
+                </p>
+              ) : (
+                <p className="mt-1 text-xs text-farol-vermelho">
+                  {analise.erro}
+                </p>
+              )
+            ) : null}
+            <p className="mt-1 text-xs text-muted-foreground">
+              Use × e ÷ para multiplicar e dividir, parênteses para agrupar e nomes para variáveis
+              (ex.: <span className="num">entregas_prazo</span>). Fórmula válida permite calcular o
+              apurado no painel.
+            </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -514,6 +550,33 @@ export function DialogIndicador({
             valor={form.procedencia}
             onChange={(v) => setForm({ ...form, procedencia: v })}
           />
+
+          <div className="rounded-md border border-border bg-superficie p-3">
+            <p className="text-sm font-medium">Limites do farol (opcional)</p>
+            <p className="text-xs text-muted-foreground">
+              Percentual de atingimento da meta. Em branco usa o padrão: 100% verde, 90% atenção.
+            </p>
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              <div>
+                <Rotulo>Limite verde (%)</Rotulo>
+                <Input
+                  inputMode="decimal"
+                  value={form.limite_verde}
+                  onChange={(e) => setForm({ ...form, limite_verde: e.target.value })}
+                  placeholder="100"
+                />
+              </div>
+              <div>
+                <Rotulo>Limite atenção (%)</Rotulo>
+                <Input
+                  inputMode="decimal"
+                  value={form.limite_atencao}
+                  onChange={(e) => setForm({ ...form, limite_atencao: e.target.value })}
+                  placeholder="90"
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="rounded-md border border-border bg-superficie p-3">
             <div className="flex items-center justify-between gap-3">

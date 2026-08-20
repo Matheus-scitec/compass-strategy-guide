@@ -397,6 +397,8 @@ export type Database = {
           formula: string | null
           frequencia: string | null
           id: string
+          limite_atencao: number | null
+          limite_verde: number | null
           linha_base: number | null
           linha_base_data: string | null
           nome: string
@@ -416,6 +418,8 @@ export type Database = {
           formula?: string | null
           frequencia?: string | null
           id?: string
+          limite_atencao?: number | null
+          limite_verde?: number | null
           linha_base?: number | null
           linha_base_data?: string | null
           nome: string
@@ -435,6 +439,8 @@ export type Database = {
           formula?: string | null
           frequencia?: string | null
           id?: string
+          limite_atencao?: number | null
+          limite_verde?: number | null
           linha_base?: number | null
           linha_base_data?: string | null
           nome?: string

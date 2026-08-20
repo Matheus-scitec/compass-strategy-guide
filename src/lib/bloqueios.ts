@@ -19,6 +19,8 @@ export type IndicadorBloq = {
   polaridade: "maior" | "menor" | null;
   linha_base: number | null;
   linha_base_data: string | null;
+  limite_verde: number | null;
+  limite_atencao: number | null;
   objetivo_id: string;
 };
 
