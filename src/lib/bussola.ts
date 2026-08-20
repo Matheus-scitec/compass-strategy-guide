@@ -335,10 +335,20 @@ export function calculaAtingimento(
   return (valor / meta) * 100;
 }
 
-export function farolDe(atingimento: number | null): Farol {
+/** Limites padrão de farol, em % de atingimento. */
+export const LIMITES_PADRAO = { verde: 100, atencao: 90 } as const;
+
+/** Calcula o farol a partir do atingimento, usando limites do indicador ou os padrões. */
+export function farolDe(
+  atingimento: number | null,
+  limiteVerde: number | null | undefined = null,
+  limiteAtencao: number | null | undefined = null,
+): Farol {
   if (atingimento === null) return "sem_apuracao";
-  if (atingimento >= 100) return "verde";
-  if (atingimento >= 90) return "atencao";
+  const verde = limiteVerde ?? LIMITES_PADRAO.verde;
+  const atencao = limiteAtencao ?? LIMITES_PADRAO.atencao;
+  if (atingimento >= verde) return "verde";
+  if (atingimento >= atencao) return "atencao";
   return "critico";
 }
 
