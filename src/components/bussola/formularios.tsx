@@ -278,6 +278,8 @@ export type IndicadorForm = {
   responsavel_apuracao: string | null;
   tipo_indicador: string;
   publicado: boolean;
+  limite_verde: string;
+  limite_atencao: string;
   procedencia: Procedencia;
 };
 
