@@ -71,8 +71,9 @@ export function Sparkline({
       caminhoMeta = segs.join(" ");
     }
 
-    const ultimoValor = dados[dados.length - 1].valor;
-    const ultimaMeta = dados[dados.length - 1].meta;
+    const ultimoPonto = dados[dados.length - 1]!;
+    const ultimoValor = ultimoPonto.valor;
+    const ultimaMeta = ultimoPonto.meta;
     const ating =
       polaridade === "menor"
         ? ultimaMeta === null || ultimoValor === 0
