@@ -326,7 +326,15 @@ function PainelExecucao() {
                           const meta = metaDe(i.id);
                           const ap = apuracaoDe(i.id);
                           const atingimento = calculaAtingimento(ap?.valor, meta, i.polaridade);
-                          const f = farolDe(atingimento);
+                          const f = farolDe(atingimento, i.limite_verde, i.limite_atencao);
+                          const serie = periodos.map((p) => ({
+                            periodo: p,
+                            valor:
+                              listaApuracoes.find((a) => a.indicador_id === i.id && a.periodo === p)
+                                ?.valor ?? null,
+                            meta: listaMetas.find((m) => m.indicador_id === i.id && m.periodo === p)
+                              ?.valor ?? null,
+                          }));
                           return (
                             <tr key={i.id} className="border-b border-border/60 align-top">
                               <td className="py-2 pr-3">
