@@ -315,6 +315,7 @@ function PainelExecucao() {
                           <th className="py-1.5 font-medium">Apurado</th>
                           <th className="py-1.5 font-medium">Atingimento</th>
                           <th className="py-1.5 font-medium">Farol</th>
+                          <th className="py-1.5 font-medium">Tendência</th>
                           <th className="py-1.5 font-medium">Natureza</th>
                           <th className="py-1.5 font-medium">Observação</th>
                           <th className="py-1.5 font-medium">Período</th>
