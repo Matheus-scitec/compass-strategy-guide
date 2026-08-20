@@ -552,6 +552,33 @@ export function DialogIndicador({
           />
 
           <div className="rounded-md border border-border bg-superficie p-3">
+            <p className="text-sm font-medium">Limites do farol (opcional)</p>
+            <p className="text-xs text-muted-foreground">
+              Percentual de atingimento da meta. Em branco usa o padrão: 100% verde, 90% atenção.
+            </p>
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              <div>
+                <Rotulo>Limite verde (%)</Rotulo>
+                <Input
+                  inputMode="decimal"
+                  value={form.limite_verde}
+                  onChange={(e) => setForm({ ...form, limite_verde: e.target.value })}
+                  placeholder="100"
+                />
+              </div>
+              <div>
+                <Rotulo>Limite atenção (%)</Rotulo>
+                <Input
+                  inputMode="decimal"
+                  value={form.limite_atencao}
+                  onChange={(e) => setForm({ ...form, limite_atencao: e.target.value })}
+                  placeholder="90"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-border bg-superficie p-3">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-medium">Publicar no painel</p>
