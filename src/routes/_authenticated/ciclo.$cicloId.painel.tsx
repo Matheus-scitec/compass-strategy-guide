@@ -65,6 +65,9 @@ type Indicador = {
   polaridade: "maior" | "menor" | null;
   unidade: string | null;
   tipo_indicador: string;
+  formula: string | null;
+  limite_verde: number | null;
+  limite_atencao: number | null;
 };
 
 type ObjetivoLinha = {
