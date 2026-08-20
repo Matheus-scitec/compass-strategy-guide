@@ -166,7 +166,9 @@ class Parser {
       this.consumir();
       return { tipo: "var", nome: t.nome };
     }
-    throw new Error(`Token inesperado: "${"valor" in t ? t.valor : t.nome}"`);
+    // t está exausto em tipos válidos aqui
+    const descricao = t.tipo === "op" || t.tipo === "paren" ? t.valor : "<inválido>";
+    throw new Error(`Token inesperado: "${descricao}"`);
   }
 
   parse(): No {
