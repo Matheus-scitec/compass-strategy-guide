@@ -31,6 +31,7 @@ import {
   type Procedencia,
 } from "@/lib/bussola";
 import { faltasDaIniciativa, faltasDoIndicador } from "@/lib/bloqueios";
+import { analisarFormula } from "@/lib/formula";
 
 type Membro = { user_id: string; perfil: { id: string; nome: string } | null };
 
