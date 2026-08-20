@@ -306,21 +306,31 @@ export function DialogIndicador({
 }) {
   const qc = useQueryClient();
   const [form, setForm] = useState<IndicadorForm>(
-    inicial ?? {
-      nome: "",
-      formula: "",
-      fonte: "",
-      frequencia: "mensal",
-      polaridade: "maior",
-      unidade: "",
-      linha_base: "",
-      linha_base_data: null,
-      responsavel_apuracao: null,
-      tipo_indicador: "resultado",
-      publicado: false,
-      procedencia: "decidido_pelo_time",
-    },
+    inicial
+      ? {
+          ...inicial,
+          limite_verde: inicial.limite_verde ?? "",
+          limite_atencao: inicial.limite_atencao ?? "",
+        }
+      : {
+          nome: "",
+          formula: "",
+          fonte: "",
+          frequencia: "mensal",
+          polaridade: "maior",
+          unidade: "",
+          linha_base: "",
+          linha_base_data: null,
+          responsavel_apuracao: null,
+          tipo_indicador: "resultado",
+          publicado: false,
+          limite_verde: "",
+          limite_atencao: "",
+          procedencia: "decidido_pelo_time",
+        },
   );
+
+  const analise = analisarFormula(form.formula);
 
   const normaliza = (t: string) => t.trim().toLowerCase();
   const duplicado = nomesExistentes.find(
