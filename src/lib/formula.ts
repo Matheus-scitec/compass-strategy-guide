@@ -11,12 +11,16 @@ type Token =
 
 const OPS = new Set(["+", "-", "*", "/", "×", "÷"]);
 
+function char(s: string, i: number): string {
+  return s[i] ?? "";
+}
+
 function tokenizar(expr: string): Token[] {
   const tokens: Token[] = [];
   let i = 0;
   const s = expr.replace(/,/g, "."); // vírgula decimal vira ponto
   while (i < s.length) {
-    const ch = s[i];
+    const ch = char(s, i);
     if (ch === " " || ch === "\t" || ch === "\n" || ch === "\r") {
       i += 1;
       continue;
@@ -45,8 +49,8 @@ function tokenizar(expr: string): Token[] {
     if (/[0-9.]/.test(ch)) {
       let j = i;
       let temPonto = false;
-      while (j < s.length && /[0-9.]/.test(s[j])) {
-        if (s[j] === ".") {
+      while (j < s.length && /[0-9.]/.test(char(s, j))) {
+        if (char(s, j) === ".") {
           if (temPonto) break;
           temPonto = true;
         }
@@ -64,7 +68,7 @@ function tokenizar(expr: string): Token[] {
     // variável: letra/_ seguido de letras, _, ., dígitos
     if (/[A-Za-zÀ-ÿ_]/.test(ch)) {
       let j = i;
-      while (j < s.length && /[A-Za-zÀ-ÿ0-9_.\-]/.test(s[j])) {
+      while (j < s.length && /[A-Za-zÀ-ÿ0-9_.\-]/.test(char(s, j))) {
         j += 1;
       }
       const nome = s.slice(i, j).replace(/\.+$/, "");
