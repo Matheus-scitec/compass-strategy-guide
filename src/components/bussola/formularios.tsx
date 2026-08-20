@@ -353,6 +353,8 @@ export function DialogIndicador({
     polaridade: form.polaridade,
     linha_base: form.linha_base === "" ? null : Number(form.linha_base),
     linha_base_data: form.linha_base_data,
+    limite_verde: null,
+    limite_atencao: null,
     objetivo_id: objetivoId,
   });
 
