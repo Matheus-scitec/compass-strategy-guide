@@ -221,7 +221,11 @@ function PainelExecucao() {
   function farolObjetivo(o: ObjetivoLinha): Farol {
     const publicados = (o.indicador ?? []).filter((i) => i.publicado);
     const faroisDe = publicados.map((i) =>
-      farolDe(calculaAtingimento(apuracaoDe(i.id)?.valor, metaDe(i.id), i.polaridade)),
+      farolDe(
+        calculaAtingimento(apuracaoDe(i.id)?.valor, metaDe(i.id), i.polaridade),
+        i.limite_verde,
+        i.limite_atencao,
+      ),
     );
     if (!faroisDe.length || faroisDe.every((f) => f === "sem_apuracao")) return "sem_apuracao";
     if (faroisDe.includes("critico")) return "critico";
