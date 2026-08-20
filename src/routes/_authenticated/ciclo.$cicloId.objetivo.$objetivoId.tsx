@@ -338,6 +338,14 @@ function FichaObjetivo() {
             responsavel_apuracao: null,
             tipo_indicador: indicadorEditando.tipo_indicador,
             publicado: indicadorEditando.publicado,
+            limite_verde:
+              indicadorEditando.limite_verde === null
+                ? ""
+                : String(indicadorEditando.limite_verde),
+            limite_atencao:
+              indicadorEditando.limite_atencao === null
+                ? ""
+                : String(indicadorEditando.limite_atencao),
             procedencia: "decidido_pelo_time",
           }}
           onPedirIniciativaLinhaBase={(nome) => {
