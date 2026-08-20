@@ -372,6 +372,8 @@ export function DialogIndicador({
       responsavel_apuracao: form.responsavel_apuracao,
       tipo_indicador: form.tipo_indicador,
       publicado: form.publicado && faltas.length === 0,
+      limite_verde: form.limite_verde === "" ? null : Number(form.limite_verde),
+      limite_atencao: form.limite_atencao === "" ? null : Number(form.limite_atencao),
       procedencia: form.procedencia,
     };
     const resposta = inicial?.id
