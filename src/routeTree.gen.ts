@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AceitarRouteImport } from './routes/aceitar'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedCiclosRouteImport } from './routes/_authenticated/ciclos'
 import { Route as AuthenticatedCicloCicloIdIndexRouteImport } from './routes/_authenticated/ciclo.$cicloId.index'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AceitarRoute = AceitarRouteImport.update({
+  id: '/aceitar',
+  path: '/aceitar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -106,6 +112,7 @@ const AuthenticatedCicloCicloIdObjetivoObjetivoIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aceitar': typeof AceitarRoute
   '/auth': typeof AuthRoute
   '/ciclos': typeof AuthenticatedCiclosRoute
   '/ciclo/$cicloId/conselho': typeof AuthenticatedCicloCicloIdConselhoRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aceitar': typeof AceitarRoute
   '/auth': typeof AuthRoute
   '/ciclos': typeof AuthenticatedCiclosRoute
   '/ciclo/$cicloId/conselho': typeof AuthenticatedCicloCicloIdConselhoRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/aceitar': typeof AceitarRoute
   '/auth': typeof AuthRoute
   '/_authenticated/ciclos': typeof AuthenticatedCiclosRoute
   '/_authenticated/ciclo/$cicloId/conselho': typeof AuthenticatedCicloCicloIdConselhoRoute
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/aceitar'
     | '/auth'
     | '/ciclos'
     | '/ciclo/$cicloId/conselho'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aceitar'
     | '/auth'
     | '/ciclos'
     | '/ciclo/$cicloId/conselho'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/aceitar'
     | '/auth'
     | '/_authenticated/ciclos'
     | '/_authenticated/ciclo/$cicloId/conselho'
@@ -203,6 +215,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AceitarRoute: typeof AceitarRoute
   AuthRoute: typeof AuthRoute
 }
 
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aceitar': {
+      id: '/aceitar'
+      path: '/aceitar'
+      fullPath: '/aceitar'
+      preLoaderRoute: typeof AceitarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -348,6 +368,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AceitarRoute: AceitarRoute,
   AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
