@@ -210,6 +210,70 @@ export type Database = {
           },
         ]
       }
+      convite: {
+        Row: {
+          aceito_em: string | null
+          aceito_por: string | null
+          codigo: string
+          convidado_por: string
+          created_at: string
+          email: string | null
+          expira_em: string
+          id: string
+          org_id: string
+          papel: Database["public"]["Enums"]["papel_org"]
+          status: string
+        }
+        Insert: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          codigo?: string
+          convidado_por?: string
+          created_at?: string
+          email?: string | null
+          expira_em?: string
+          id?: string
+          org_id: string
+          papel?: Database["public"]["Enums"]["papel_org"]
+          status?: string
+        }
+        Update: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          codigo?: string
+          convidado_por?: string
+          created_at?: string
+          email?: string | null
+          expira_em?: string
+          id?: string
+          org_id?: string
+          papel?: Database["public"]["Enums"]["papel_org"]
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "convite_aceito_por_fkey"
+            columns: ["aceito_por"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "convite_convidado_por_fkey"
+            columns: ["convidado_por"]
+            isOneToOne: false
+            referencedRelation: "perfil"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "convite_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizacao"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       decisao: {
         Row: {
           acao_id: string | null
@@ -852,6 +916,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      aceitar_convite: { Args: { _codigo: string }; Returns: string }
+      convite_por_codigo: {
+        Args: { _codigo: string }
+        Returns: {
+          expira_em: string
+          org_nome: string
+          papel: Database["public"]["Enums"]["papel_org"]
+          status: string
+        }[]
+      }
       criar_organizacao: { Args: { _nome: string }; Returns: string }
       e_membro: { Args: { _org: string }; Returns: boolean }
       org_da_iniciativa: { Args: { _ini: string }; Returns: string }

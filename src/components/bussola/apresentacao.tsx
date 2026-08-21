@@ -7,6 +7,25 @@ import { GUIAS, type TelaGuia } from "@/lib/apresentacao";
 type Caixa = { top: number; left: number; width: number; height: number };
 
 const CHAVE = (tela: TelaGuia) => `bussola:guia:${tela}`;
+const CHAVE_DESATIVADO = "bussola:guia:desativado";
+
+/** Preferência global: o tour não abre sozinho em nenhuma tela. */
+export function tourDesativado(): boolean {
+  try {
+    return localStorage.getItem(CHAVE_DESATIVADO) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function definirTourDesativado(valor: boolean) {
+  try {
+    if (valor) localStorage.setItem(CHAVE_DESATIVADO, "1");
+    else localStorage.removeItem(CHAVE_DESATIVADO);
+  } catch {
+    /* armazenamento indisponível */
+  }
+}
 
 function medir(alvo?: string): Caixa | null {
   if (!alvo || typeof document === "undefined") return null;
@@ -22,6 +41,7 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
   const [aberta, setAberta] = useState(false);
   const [i, setI] = useState(0);
   const [caixa, setCaixa] = useState<Caixa | null>(null);
+  const [desativado, setDesativado] = useState(false);
 
   const passo = guia.passos[Math.min(i, guia.passos.length - 1)];
 
@@ -39,8 +59,16 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
     }
   }, [tela]);
 
-  // Primeira visita à tela: abre sozinha.
+  const alternarDesativado = useCallback((valor: boolean) => {
+    definirTourDesativado(valor);
+    setDesativado(valor);
+  }, []);
+
+  // Primeira visita à tela: abre sozinha, a menos que o tour esteja desativado.
   useEffect(() => {
+    const off = tourDesativado();
+    setDesativado(off);
+    if (off) return undefined;
     let visto = "1";
     try {
       visto = localStorage.getItem(CHAVE(tela)) ?? "";
@@ -188,7 +216,20 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
               </dl>
             ) : null}
 
-            <div className="mt-4 flex items-center justify-between gap-2">
+            <label className="mt-4 flex cursor-pointer items-start gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-3.5 w-3.5 accent-[var(--color-primary)]"
+                checked={desativado}
+                onChange={(e) => alternarDesativado(e.target.checked)}
+              />
+              <span>
+                Não abrir a apresentação automaticamente em nenhuma tela. Você ainda pode chamá-la
+                pelo botão “Apresentação guiada”.
+              </span>
+            </label>
+
+            <div className="mt-3 flex items-center justify-between gap-2">
               <Button variant="ghost" size="sm" onClick={fechar}>
                 Sair
               </Button>
