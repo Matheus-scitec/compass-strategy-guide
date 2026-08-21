@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ApresentacaoGuiada } from "@/components/bussola/apresentacao";
+import { CompartilharCiclo } from "@/components/bussola/convites";
 import type { TelaGuia } from "@/lib/apresentacao";
 
 export function AppShell({
