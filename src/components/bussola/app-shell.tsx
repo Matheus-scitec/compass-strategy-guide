@@ -116,13 +116,19 @@ export function Painel({
 }) {
   return (
     <section
-      className={cn("rounded-md border border-border bg-card", className)}
+      className={cn(
+        "rounded-lg border border-border/60 bg-card shadow-elevado transition-shadow hover:shadow-alto",
+        className,
+      )}
       {...(guia ? { "data-guia": guia } : {})}
     >
       {titulo ? (
-        <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <header className="flex flex-wrap items-center justify-between gap-2 rounded-t-lg border-b border-border/60 bg-muted/50 px-4 py-3">
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide">{titulo}</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+              {titulo}
+            </h2>
+
             {descricao ? (
               <p className="mt-0.5 text-xs text-muted-foreground">{descricao}</p>
             ) : null}
