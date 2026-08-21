@@ -82,9 +82,10 @@ export function AppShell({
 
       <main className="mx-auto max-w-[1400px] px-4 py-6">
         {titulo ? (
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-l-4 border-primary pl-3">
             <div>
-              <h1 className="text-2xl font-bold">{titulo}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight">{titulo}</h1>
+
               {subtitulo ? (
                 <p className="mt-1 text-sm text-muted-foreground">{subtitulo}</p>
               ) : null}
