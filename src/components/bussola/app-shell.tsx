@@ -39,10 +39,13 @@ export function AppShell({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-sidebar-border bg-sidebar text-sidebar-foreground shadow-elevado">
         <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-4 px-4">
-          <Link to="/ciclos" className="flex items-center gap-2 font-display text-sm font-bold">
-            <Compass className="h-4 w-4 text-primary" />
+          <Link
+            to="/ciclos"
+            className="flex items-center gap-2 font-display text-sm font-semibold tracking-tight text-sidebar-foreground"
+          >
+            <Compass className="h-4 w-4 text-sidebar-primary" />
             Bússola
           </Link>
           <nav className="flex flex-1 items-center gap-1 overflow-x-auto" data-guia="abas">
@@ -52,27 +55,30 @@ export function AppShell({
                 to={aba.to}
                 params={{ cicloId: cicloId! }}
                 activeOptions={{ exact: aba.to === "/ciclo/$cicloId" }}
-                className="rounded-sm px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-superficie-forte hover:text-foreground data-[status=active]:bg-superficie-forte data-[status=active]:font-medium data-[status=active]:text-foreground"
+                className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground data-[status=active]:bg-sidebar-accent data-[status=active]:font-medium data-[status=active]:text-sidebar-primary"
               >
                 {aba.label}
               </Link>
             ))}
           </nav>
-          {cicloId ? <CompartilharCiclo cicloId={cicloId} /> : null}
-          {tela ? <ApresentacaoGuiada tela={tela} /> : null}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={async () => {
-              await supabase.auth.signOut();
-              void navigate({ to: "/auth" });
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-            <span className="hidden sm:inline">Sair</span>
-          </Button>
+          <div className="flex items-center gap-2 [&_button]:border-sidebar-border [&_button]:text-sidebar-foreground [&_button:hover]:bg-sidebar-accent [&_button:hover]:text-sidebar-foreground">
+            {cicloId ? <CompartilharCiclo cicloId={cicloId} /> : null}
+            {tela ? <ApresentacaoGuiada tela={tela} /> : null}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                void navigate({ to: "/auth" });
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">Sair</span>
+            </Button>
+          </div>
         </div>
       </header>
+
 
       <main className="mx-auto max-w-[1400px] px-4 py-6">
         {titulo ? (
