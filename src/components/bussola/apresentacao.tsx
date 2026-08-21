@@ -41,6 +41,7 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
   const [aberta, setAberta] = useState(false);
   const [i, setI] = useState(0);
   const [caixa, setCaixa] = useState<Caixa | null>(null);
+  const [desativado, setDesativado] = useState(false);
 
   const passo = guia.passos[Math.min(i, guia.passos.length - 1)];
 
@@ -58,8 +59,16 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
     }
   }, [tela]);
 
-  // Primeira visita à tela: abre sozinha.
+  const alternarDesativado = useCallback((valor: boolean) => {
+    definirTourDesativado(valor);
+    setDesativado(valor);
+  }, []);
+
+  // Primeira visita à tela: abre sozinha, a menos que o tour esteja desativado.
   useEffect(() => {
+    const off = tourDesativado();
+    setDesativado(off);
+    if (off) return undefined;
     let visto = "1";
     try {
       visto = localStorage.getItem(CHAVE(tela)) ?? "";
