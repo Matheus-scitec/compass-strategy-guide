@@ -57,6 +57,7 @@ export function AppShell({
               </Link>
             ))}
           </nav>
+          {cicloId ? <CompartilharCiclo cicloId={cicloId} /> : null}
           {tela ? <ApresentacaoGuiada tela={tela} /> : null}
           <Button
             variant="ghost"
