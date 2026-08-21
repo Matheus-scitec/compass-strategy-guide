@@ -216,7 +216,20 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
               </dl>
             ) : null}
 
-            <div className="mt-4 flex items-center justify-between gap-2">
+            <label className="mt-4 flex cursor-pointer items-start gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-3.5 w-3.5 accent-[var(--color-primary)]"
+                checked={desativado}
+                onChange={(e) => alternarDesativado(e.target.checked)}
+              />
+              <span>
+                Não abrir a apresentação automaticamente em nenhuma tela. Você ainda pode chamá-la
+                pelo botão “Apresentação guiada”.
+              </span>
+            </label>
+
+            <div className="mt-3 flex items-center justify-between gap-2">
               <Button variant="ghost" size="sm" onClick={fechar}>
                 Sair
               </Button>
