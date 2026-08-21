@@ -7,6 +7,25 @@ import { GUIAS, type TelaGuia } from "@/lib/apresentacao";
 type Caixa = { top: number; left: number; width: number; height: number };
 
 const CHAVE = (tela: TelaGuia) => `bussola:guia:${tela}`;
+const CHAVE_DESATIVADO = "bussola:guia:desativado";
+
+/** Preferência global: o tour não abre sozinho em nenhuma tela. */
+export function tourDesativado(): boolean {
+  try {
+    return localStorage.getItem(CHAVE_DESATIVADO) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function definirTourDesativado(valor: boolean) {
+  try {
+    if (valor) localStorage.setItem(CHAVE_DESATIVADO, "1");
+    else localStorage.removeItem(CHAVE_DESATIVADO);
+  } catch {
+    /* armazenamento indisponível */
+  }
+}
 
 function medir(alvo?: string): Caixa | null {
   if (!alvo || typeof document === "undefined") return null;
