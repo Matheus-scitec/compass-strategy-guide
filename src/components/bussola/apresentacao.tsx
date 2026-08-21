@@ -175,7 +175,7 @@ export function ApresentacaoGuiada({ tela }: { tela: TelaGuia }) {
                 left: caixa.left - 4,
                 width: caixa.width + 8,
                 height: caixa.height + 8,
-                boxShadow: "0 0 0 9999px oklch(0.15 0.02 260 / 0.62)",
+                boxShadow: "0 0 0 9999px hsl(222 47% 11% / 0.7)",
               }}
             />
           ) : (
