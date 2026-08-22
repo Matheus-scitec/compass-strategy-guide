@@ -22,6 +22,8 @@ export type IndicadorBloq = {
   limite_verde: number | null;
   limite_atencao: number | null;
   objetivo_id: string;
+  meta_texto?: string | null;
+  responsavel_nome?: string | null;
 };
 
 export type IniciativaBloq = {

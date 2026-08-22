@@ -70,6 +70,26 @@ export const STATUS_ACAO_LABEL: Record<string, string> = {
 /** Etapa 1 — retrato factual. Campo sem dado vira lacuna, nunca percepção. */
 export const BLOCOS_DIAGNOSTICO: { valor: string; nome: string; pergunta: string }[] = [
   {
+    valor: "swot_forcas",
+    nome: "SWOT · Forças",
+    pergunta: "O que a empresa faz bem hoje e consegue comprovar com fato.",
+  },
+  {
+    valor: "swot_fraquezas",
+    nome: "SWOT · Fraquezas",
+    pergunta: "O que hoje já falha internamente e limita a entrega.",
+  },
+  {
+    valor: "swot_oportunidades",
+    nome: "SWOT · Oportunidades",
+    pergunta: "Movimentos externos que a empresa pode capturar neste horizonte.",
+  },
+  {
+    valor: "swot_ameacas",
+    nome: "SWOT · Ameaças",
+    pergunta: "Fatores externos que podem interromper ou encarecer a operação.",
+  },
+  {
     valor: "mercado_cliente",
     nome: "Mercado e cliente",
     pergunta:

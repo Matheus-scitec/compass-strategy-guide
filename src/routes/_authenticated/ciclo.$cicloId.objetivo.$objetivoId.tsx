@@ -165,6 +165,17 @@ function FichaObjetivo() {
                           {fmtData(i.linha_base_data)} ·{" "}
                           {i.tipo_indicador === "direcao" ? "de direção" : "de resultado"}
                         </p>
+                        {i.meta_texto || i.responsavel_nome ? (
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {i.meta_texto ? (
+                              <>
+                                Meta do documento: <span className="num">{i.meta_texto}</span>
+                              </>
+                            ) : null}
+                            {i.meta_texto && i.responsavel_nome ? " · " : null}
+                            {i.responsavel_nome ? `responsável: ${i.responsavel_nome}` : null}
+                          </p>
+                        ) : null}
                       </div>
                       <div className="flex flex-col items-end gap-1">
                         <span

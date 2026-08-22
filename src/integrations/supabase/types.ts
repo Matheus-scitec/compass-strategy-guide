@@ -465,12 +465,14 @@ export type Database = {
           limite_verde: number | null
           linha_base: number | null
           linha_base_data: string | null
+          meta_texto: string | null
           nome: string
           objetivo_id: string
           polaridade: Database["public"]["Enums"]["polaridade"] | null
           procedencia: Database["public"]["Enums"]["procedencia"]
           publicado: boolean
           responsavel_apuracao: string | null
+          responsavel_nome: string | null
           tipo_indicador: string
           unidade: string | null
         }
@@ -486,12 +488,14 @@ export type Database = {
           limite_verde?: number | null
           linha_base?: number | null
           linha_base_data?: string | null
+          meta_texto?: string | null
           nome: string
           objetivo_id: string
           polaridade?: Database["public"]["Enums"]["polaridade"] | null
           procedencia?: Database["public"]["Enums"]["procedencia"]
           publicado?: boolean
           responsavel_apuracao?: string | null
+          responsavel_nome?: string | null
           tipo_indicador?: string
           unidade?: string | null
         }
@@ -507,12 +511,14 @@ export type Database = {
           limite_verde?: number | null
           linha_base?: number | null
           linha_base_data?: string | null
+          meta_texto?: string | null
           nome?: string
           objetivo_id?: string
           polaridade?: Database["public"]["Enums"]["polaridade"] | null
           procedencia?: Database["public"]["Enums"]["procedencia"]
           publicado?: boolean
           responsavel_apuracao?: string | null
+          responsavel_nome?: string | null
           tipo_indicador?: string
           unidade?: string | null
         }
